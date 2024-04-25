@@ -3,8 +3,8 @@
 #include "Scene/Scene.h"
 
 //メイン関数（プログラムはここから始まります。）
-int WINAPI winMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
-	_In_ LPSTR lpComdLine, _In_ int nShowCmd)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
 	//Windowモードで起動
 	ChangeWindowMode(TRUE);
@@ -57,7 +57,7 @@ int WINAPI winMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		//エラー情報をLog.txtに出力する
 		OutputDebugString(error_log);
 		//異常状態に変更する
-		result - -1;
+		result = -1;
 	}
 
 	//シーン情報を削除する

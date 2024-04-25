@@ -31,7 +31,7 @@ void Player::Initialize()
 	//向きの設定
 	radian = 0.0;
 
-	//当たり判定の大きさ設定
+	//大きさの設定
 	scale = 64.0;
 
 	//初期画像の設定
@@ -44,7 +44,7 @@ void Player::Update()
 	//移動処理
 	Movement();
 	//アニメーション制御
-	AnimetionControl();
+	AnimeControl();
 }
 
 //描画処理
@@ -53,7 +53,7 @@ void Player::Draw() const
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
 
-//デバック用
+	//デバック用
 #if _DEBUG
 	//当たり判定の可視化
 	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
@@ -109,7 +109,7 @@ void Player::Movement()
 }
 
 //アニメーション制御
-void Player::AnimetionControl()
+void Player::AnimeControl()
 {
 	//フレームカウントを加算する
 	animation_count++;
