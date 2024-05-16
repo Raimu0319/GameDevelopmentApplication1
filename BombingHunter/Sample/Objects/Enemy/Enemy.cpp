@@ -161,16 +161,16 @@ void Enemy::OnHitCollision(GameObject* hit_object)
 }
 
 //ˆÊ’uî•ñæ“¾ˆ—
-Vector2D Enemy::GetLocation() const
+/*Vector2D Enemy::GetLocation() const
 {
 	return this->location;
-}
+}*/
 
 //ˆÊ’uî•ñİ’èˆ—
-void Enemy::SetLocation(const Vector2D& location)
+/*void Enemy::SetLocation(const Vector2D& location)
 {
 	this->location = location;
-}
+}*/
 
 //ˆÚ“®ˆ—
 void Enemy::Movement()
