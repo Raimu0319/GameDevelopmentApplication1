@@ -1,6 +1,8 @@
 #include "Scene.h"
-
 #include "../Objects/Player/Player.h"
+#include "../Objects/Enemy/Enemy.h"
+#include "../Utility/InputControl.h"
+#include "Dxlib.h"
 
 //コンストラクタ
 Scene::Scene() : objects()
@@ -29,6 +31,22 @@ void Scene::Update()
 	for (GameObject* obj : objects)
 	{
 		obj->Update();
+	}
+
+	//オブジェクト同士の当たり判定チェック
+	for (int i = 0; i < objects.size(); i++)
+	{
+		for (int j = i + 1; j < objects.size(); j++)
+		{
+			//当たり判定チェック処理
+			HitCheckObject(objects[i], objects[j]);
+		}
+	}
+
+	//Zキーを押したら、敵を生成する
+	if (InputControl::GetKeyDown(KEY_INPUT_Z))
+	{
+		CreateObject<Enemy>(Vector2D(100.0f, 400.0f));
 	}
 }
 
@@ -60,4 +78,35 @@ void Scene::Finalize()
 
 	//動的配列の開放
 	objects.clear();
+
 }
+
+#ifdef D_PIVOT_CENTER
+	//当たり判定チェック処理（矩形の中心で当たり判定を取る）
+	void Scene::HitCheckObject(GameObject * a, GameObject * b)
+	{
+		//二つのオブジェクトの距離を取得
+		Vector2D diff = a->GetLocation() - b->GetLocation();
+
+		//二つのオブジェクトの当たり判定の大きさを取得
+		Vector2D box_size = (a->GetBoxSize() + b->GetBoxSize()) / 2.0f;
+
+		//距離より大きさが大きい場合、hit判定とする
+		if ((fabsf(diff.x) < box_size.x) && (fabs(diff.y) < box_size.y))
+		{
+			//当たったことをオブジェクトに通知する
+			a->OnHitCollision(b);
+			b->OnHitCollision(a);
+		}
+	}
+#else
+
+	//当たり判定チェック処理（左上頂点の座標から当たり判定計算を行う）
+	void Scene::HitCheckObject(GameObject* a, GameObject* b)
+	{
+
+
+	}
+	Vector2D a_lower_right = a->GetLocation() + a->GetBoxSize();
+#endif // D_PIVOT_CENTER
+

@@ -19,8 +19,8 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Images/飛ぶ1.png");
-	animation[1] = LoadGraph("Resource/Images/飛ぶ2.png");
+	animation[0] = LoadGraph("Resource/Images/Player/飛ぶ1.png");
+	animation[1] = LoadGraph("Resource/Images/Player/飛ぶ2.png");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
@@ -32,7 +32,7 @@ void Player::Initialize()
 	radian = 0.0;
 
 	//当たり判定の大きさ設定
-	scale = 64.0;
+	box_size = 64.0;
 
 	//初期画像の設定
 	image = animation[0];
@@ -56,10 +56,8 @@ void Player::Draw() const
 //デバック用
 #if _DEBUG
 	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
-		(float)scale / 2.0f);
+	Vector2D box_collision_upper_left = location - (box_size / 2.0f);
+	Vector2D box_collision_lower_right = location + (box_size / 2.0f);
 
 	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
 		box_collision_lower_right.x, box_collision_lower_right.y,

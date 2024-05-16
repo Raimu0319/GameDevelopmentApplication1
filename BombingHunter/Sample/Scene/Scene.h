@@ -7,7 +7,7 @@
 class Scene
 {
 private:
-	std::vector<GameObject*> objects;
+	std::vector<GameObject*> objects;		//オブジェクトリスト
 
 public:
 	Scene();
@@ -19,6 +19,9 @@ public:
 	void Finalize();
 
 private:
+	//当たり判定チェック処理
+	void HitCheckObject(GameObject* a, GameObject* b);
+
 	//オブジェクト生成処理
 	template <class T>
 	T* CreateObject(const Vector2D& location)

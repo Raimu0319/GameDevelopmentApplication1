@@ -19,8 +19,8 @@ Player::~Player()
 void Player::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Images/飛ぶ1.png");
-	animation[1] = LoadGraph("Resource/Images/飛ぶ2.png");
+	animation[0] = LoadGraph("Resource/Images/Player/飛ぶ1.png");
+	animation[1] = LoadGraph("Resource/Images/Player/飛ぶ2.png");
 
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
