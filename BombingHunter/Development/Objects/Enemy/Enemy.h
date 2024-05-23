@@ -14,6 +14,8 @@ private:
 	int animation_count;		//アニメーション時間
 	Vector2D direction;		//進行方向
 
+	int Enemytag;
+
 public:
 	Enemy();
 	virtual ~Enemy();
@@ -27,11 +29,16 @@ public:
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_obfect);
 
+	//当たり判定区別
+	int EnemyGettag();
+
 	//位置情報取得処理
 	Vector2D GetLocation() const;
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
+
+
 
 private:
 	//移動処理

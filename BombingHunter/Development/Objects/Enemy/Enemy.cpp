@@ -76,6 +76,9 @@ void Enemy::Initialize()
 		}
 	}
 
+	//エネミーのタグ
+	Enemytag = 1;
+
 	//向きの設定
 	radian = 0.0f;
 
@@ -159,8 +162,11 @@ void Enemy::Finalize()
 //当たり判定通知処理
 void Enemy::OnHitCollision(GameObject* hit_object)
 {
-	//当たった時に行う処理
-	direction = 0.0f;
+	if (EnemyGettag() != 1)
+	{
+		//当たった時に行う処理
+		direction = 0.0f;
+	}	
 }
 
 //位置情報取得処理
@@ -195,6 +201,12 @@ void Enemy::Movement()
 
 	//進行方向に向かって、位置座標を変更する
 	location += direction;
+}
+
+//当たり判定区別
+int  Enemy::EnemyGettag()
+{
+	return Enemytag;
 }
 
 void Enemy::RandomSpwan()
