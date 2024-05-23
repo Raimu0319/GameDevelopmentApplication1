@@ -4,16 +4,15 @@
 
 class Enemy : public GameObject
 {
-protected:
-	int animation_count;			//アニメーション時間
-	int filp_flag;			//反転フラグ
-
 private:
 	//敵画像
 	int hakoteki[2];
 	int haneteki[2];
 	int happy[2];
 	int kinteki[5];
+
+	int animation_count;		//アニメーション時間
+	Vector2D direction;		//進行方向
 
 public:
 	Enemy();
@@ -23,6 +22,7 @@ public:
 	virtual void Update() override;			//更新処理
 	virtual void Draw() const override;		//描画処理
 	virtual void Finalize() override;		//終了時処理
+	void RandomSpwan();				//敵をランダム出現させる
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_obfect);
@@ -34,6 +34,9 @@ public:
 	void SetLocation(const Vector2D& location);
 
 private:
+	//移動処理
+	void Movement();
 	//アニメーション制御
-	void EnemyAnimeControl();
+	void AnimetionControl();
 };
+

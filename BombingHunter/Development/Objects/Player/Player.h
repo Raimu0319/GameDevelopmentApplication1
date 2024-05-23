@@ -25,5 +25,5 @@ private:
 	//移動処理
 	void Movement();
 	//アニメーション制御
-	void AnimeControl();
+	void AnimetionControl();
 };

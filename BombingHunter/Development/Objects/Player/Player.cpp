@@ -31,8 +31,8 @@ void Player::Initialize()
 	//向きの設定
 	radian = 0.0;
 
-	//大きさの設定
-	scale = 64.0;
+	//当たり判定の大きさ設定
+	box_size = 64.0;
 
 	//初期画像の設定
 	image = animation[0];
@@ -44,7 +44,7 @@ void Player::Update()
 	//移動処理
 	Movement();
 	//アニメーション制御
-	AnimeControl();
+	AnimetionControl();
 }
 
 //描画処理
@@ -56,10 +56,8 @@ void Player::Draw() const
 	//デバック用
 #if _DEBUG
 	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (Vector2D(1.0f) *
-		(float)scale / 2.0f);
-	Vector2D box_collision_lower_right = location + (Vector2D(1.0f) *
-		(float)scale / 2.0f);
+	Vector2D box_collision_upper_left = location - (box_size / 2.0f);
+	Vector2D box_collision_lower_right = location + (box_size / 2.0f);
 
 	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
 		box_collision_lower_right.x, box_collision_lower_right.y,
@@ -104,12 +102,24 @@ void Player::Movement()
 		velocity.x += 0.0f;
 	}
 
+	//画面外にいかないように制限する
+	if (location.x < (box_size.x / 2.0f))
+	{
+		velocity.x = 0.0f;
+		location.x = box_size.x / 2.0f;
+	}
+	else if ((640.0f - (box_size.x / 2.0f)) < location.x)
+	{
+		velocity.x = 0.0f;
+		location.x = 640.0f - (box_size.x / 2.0f);
+	}
+
 	//現在の位置座標に速さを加算する
 	location += velocity;
 }
 
 //アニメーション制御
-void Player::AnimeControl()
+void Player::AnimetionControl()
 {
 	//フレームカウントを加算する
 	animation_count++;

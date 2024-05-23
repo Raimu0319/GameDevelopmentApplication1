@@ -2,7 +2,7 @@
 #include"DxLib.h"
 
 //コンストラクタ
-Enemy::Enemy() : animation_count(0), filp_flag(FALSE)
+Enemy::Enemy() : animation_count(0), direction(0.0f)
 {
 	hakoteki[0] = NULL;
 	hakoteki[1] = NULL;
@@ -18,6 +18,7 @@ Enemy::Enemy() : animation_count(0), filp_flag(FALSE)
 	kinteki[2] = NULL;
 	kinteki[3] = NULL;
 	kinteki[4] = NULL;
+
 }
 
 //デストラクタ
@@ -29,7 +30,6 @@ Enemy::~Enemy()
 //初期化処理
 void Enemy::Initialize()
 {
-	//初期化用関数
 	int i;
 
 	//画像の読み込み
@@ -80,41 +80,79 @@ void Enemy::Initialize()
 	radian = 0.0f;
 
 	//大きさの設定
-	scale = 32.0f;
+	box_size = 64.0f;
+
+	image = NULL;
 
 	//初期画像の設定
-	image = hakoteki[0];
+	RandomSpwan();
+
+	//初期進行方向の設定
+	direction = Vector2D(1.0f, 0.0f);
 }
 
 //更新処理
 void Enemy::Update()
 {
-	//右に進み続ける
-	location.x += 1.0f;
+	//移動処理
+	Movement();
 
-	//右端に行くと左端に戻る
-	if (location.x >= 640.0f)
-	{
-		location.x = 0.0f;
-	}
+	//アニメーション制御
+	AnimetionControl();
+
 }
 
 //描画処理
 void Enemy::Draw() const
 {
+	//画像反転フラグ
+	int flip_flag = FALSE;
+
+	//進行方向によって、反転状態を決定する
+	if (direction.x > 0.0f)
+	{
+		flip_flag = FALSE;
+	}
+	else
+	{
+		flip_flag = TRUE;
+	}
+
+	//情報を基にハコテキ画像を描画する
+	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, flip_flag);
+
+	//親クラスの描画処理を呼び出す
+	__super::Draw();
+	/*
 	//画像の描画
 	DrawRotaGraphF(location.x, location.y, 0.6, 0.0, image, TRUE);
 
-	Vector2D upper_left = location - (scale / 2.0f);
-	Vector2D lower_right = location + (scale / 2.0f);
+	Vector2D upper_left = location - (box_size / 2.0f);
+	Vector2D lower_right = location + (box_size / 2.0f);
 
 	//当たり判定の可視化
-	DrawBoxAA(upper_left.x, upper_left.y, lower_right.x, lower_right.y, GetColor(255,0,0), FALSE);
+	DrawBoxAA(upper_left.x, upper_left.y, lower_right.x, lower_right.y, GetColor(255, 0, 0), FALSE);
+	*/
 }
 
 //終了時処理
 void Enemy::Finalize()
 {
+	int i;
+
+	//使用した画像を開放
+	for (i = 0; i < 2; i++)
+	{
+		DeleteGraph(hakoteki[i]);
+		DeleteGraph(haneteki[i]);
+		DeleteGraph(happy[i]);
+	}
+
+	for (i = 0; i < 4; i++)
+	{
+		DeleteGraph(kinteki[i]);
+	}
+
 
 }
 
@@ -122,6 +160,7 @@ void Enemy::Finalize()
 void Enemy::OnHitCollision(GameObject* hit_object)
 {
 	//当たった時に行う処理
+	direction = 0.0f;
 }
 
 //位置情報取得処理
@@ -136,26 +175,97 @@ void Enemy::SetLocation(const Vector2D& location)
 	this->location = location;
 }
 
+//移動処理
+void Enemy::Movement()
+{
+	//画面右端に到達したら、左端に戻る
+	//if (((location.x + direction.x) < box_size.x) ||(640.0f - box_size.x) < (location.x + direction.x))
+	if ((640.0f - box_size.x) < (location.x + direction.x))
+	{
+		location.x = -1.0f;
+		direction.x *= 1.0f;
+	}
+
+	if (((location.y + direction.y) < box_size.y) ||
+		(480.0f - box_size.y) < (location.y + direction.y))
+	{
+		location.x = 630;
+		direction.y *= -1.0f;
+	}
+
+	//進行方向に向かって、位置座標を変更する
+	location += direction;
+}
+
+void Enemy::RandomSpwan()
+{
+	int i;
+	i =  GetRand(6);
+
+	switch (i)
+	{
+	case 0:
+	case 1:
+	case 2:
+		image = hakoteki[0];
+		break;
+	
+	case 3:
+	case 4:
+		image = haneteki[0];
+		break;
+
+	case 5:
+		image = happy[0];
+		break;
+
+	case 6:
+		image = kinteki[0];
+		break;
+
+	}
+}
+
 //敵アニメーション制御
-void Enemy::EnemyAnimeControl()
+void Enemy::AnimetionControl()
 {
 	//フレームカウントを加算する
 	animation_count++;
 
-	//60フレーム目に到達したら
-	if (animation_count >= 60)
+	//30フレーム目に到達したら
+	if (animation_count >= 30)
 	{
 		//countのリセット
 		animation_count = 0;
+	
 
 		//画像の切り替え
 		if (image == hakoteki[0])
 		{
 			image = hakoteki[1];
 		}
-		else
+		else if (image == hakoteki[1])
 		{
 			image = hakoteki[0];
 		}
+
+		if (image == haneteki[0])
+		{
+			image = haneteki[1];
+		}
+		else if(image == haneteki[1])
+		{
+			image = haneteki[0];
+		}
+
+		if (image == happy[0])
+		{
+			image = happy[1];
+		}
+		else if (image == happy[1])
+		{
+			image = happy[0];
+		}
+
 	}
 }
