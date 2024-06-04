@@ -18,6 +18,12 @@ public:
 	virtual void Draw() const override;		//描画処理
 	virtual void Finalize() override;			//終了時処理
 
+	//位置情報取得処理
+	Vector2D GetLocation() const;
+
+	//位置情報設定処理
+	void SetLocation(const Vector2D& location);
+
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_object) override;
 

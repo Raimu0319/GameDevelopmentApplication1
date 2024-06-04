@@ -1,41 +1,30 @@
 #pragma once
 
-//キーボードの入力情報管理クラス
-class Bomb
+#include "../GameObject.h"
+
+class Bomb : public GameObject
 {
 private:
-	//自クラスのポインタ（アドレスの先にインスタンスを生成する）
-	static Bomb* instance;
+	int animation[4];		//アニメーション画像
+	int animation_count;   //アニメーション時間
+	int filp_flag;			//反転フラグ
+	Vector2D direction;		//進行方向
+
+public:
+	Bomb();
+	~Bomb();
+
+	virtual void Initialize() override;			//初期化処理
+	virtual void Update() override;			    //更新処理
+	virtual void Draw() const override;		//描画処理
+	virtual void Finalize() override;			//終了時処理
+
+	//当たり判定通知処理
+	virtual void OnHitCollision(GameObject* hit_object) override;
 
 private:
-	//コンストラクタをprivateにすることで、
-	//自クラスのメンバ関数でしかインスタンスを生成できないようにする
-	Bomb() = default;
-
-	//コピーガード
-	//クラス外でインスタンスを生成して渡すことができないようにする
-	Bomb(Bomb& v) = delete;
-	Bomb& operator = (const Bomb& v) = delete;
-	//～コピーガード
-
-public:
-	~Bomb() = default;
-
-public:
-	//インスタンス取得する処理
-	static Bomb* GetInstance();
-	//インスタンス削除する処理
-	static void DeleteInstance();
-
-	//判定処理
-
-
-public:
-	//キーボードの更新
-	void Update();
-
-	//爆弾を生成
-private:
-	//キーコードの有効範囲チェック
-	bool CheckkeyCodeRange(int key_code) const;
+	//移動処理
+	void Movement();
+	//アニメーション制御
+	void AnimetionControl();
 };

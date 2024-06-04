@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "../Objects/Player/Player.h"
 #include "../Objects/Enemy/Enemy.h"
+#include "../Objects//Player/Bomb.h"
 #include "../Utility/InputControl.h"
 #include "Dxlib.h"
 
@@ -22,11 +23,14 @@ void Scene::Initialize()
 {
 	//プレイヤーを生成する
 	CreateObject<Player>(Vector2D(320.0f, 60.0f));
+
 }
 
 //更新処理
 void Scene::Update()
 {
+	
+
 	//シーンに存在するオブジェクトの更新処理
 	for (GameObject* obj : objects)
 	{
@@ -43,13 +47,36 @@ void Scene::Update()
 		}
 	}
 
+	// 削除したいオブジェクトを削除する
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->GetActive() == false)
+		{
+			objects.erase(objects.begin() + i);
+			i--;
+		}
+	}
+
+
 	//Zキーを押したら、敵を生成する
 	if (InputControl::GetKeyDown(KEY_INPUT_Z))
 	{
-
 		CreateObject<Enemy>(Vector2D(100.0f, 400.0f));
 	}
+
+	//スペースキーを押したら、爆弾を生成する
+	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
+	{
+		CreateObject<Bomb>(Vector2D(objects[0]->GetLocation()));
+	}
+
+	
 }
+
+//void Scene::deleteEnemy()
+//{
+//	delete Enemy;
+//}
 
 //描画処理
 void Scene::Draw() const

@@ -1,5 +1,6 @@
 #include "Player.h"
-#include "../../Utility/InputCOntrol.h"
+#include "../Enemy/Enemy.h"
+#include "../../Utility/InputControl.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -36,6 +37,8 @@ void Player::Initialize()
 
 	//初期画像の設定
 	image = animation[0];
+
+	type = player;
 }
 
 //更新処理
@@ -77,7 +80,7 @@ void Player::Finalize()
 //当たり判定通知処理
 void Player::OnHitCollision(GameObject* hit_object)
 {
-	//当たった時の処理
+	hit_object->get_type();
 }
 
 //移動処理
@@ -116,6 +119,18 @@ void Player::Movement()
 
 	//現在の位置座標に速さを加算する
 	location += velocity;
+}
+
+//位置情報取得処理
+Vector2D Player::GetLocation() const
+{
+	return this->location;
+}
+
+//位置情報設定処理
+void Player::SetLocation(const Vector2D& location)
+{
+	this->location = location;
 }
 
 //アニメーション制御

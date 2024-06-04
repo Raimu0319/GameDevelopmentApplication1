@@ -8,6 +8,7 @@ class Scene
 {
 private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
+	Vector2D location;
 
 public:
 	Scene();
@@ -17,6 +18,9 @@ public:
 	void Update();
 	void Draw() const;
 	void Finalize();
+
+	//敵が消える処理
+	void deleteEnemy();
 
 private:
 	//当たり判定チェック処理

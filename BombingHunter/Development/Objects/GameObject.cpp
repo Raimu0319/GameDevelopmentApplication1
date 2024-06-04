@@ -6,6 +6,7 @@ GameObject::GameObject() :
 	location(0.0f),
 	box_size(0.0f),
 	radian(0.0),
+	type(NULL),
 	image(NULL),
 	sound(NULL)
 {
@@ -76,4 +77,10 @@ void GameObject::SetLocation(const Vector2D& location)
 Vector2D GameObject::GetBoxSize() const
 {
 	return box_size;
+}
+
+//オブジェクトのタイプを渡す
+int GameObject::get_type() const
+{
+	return type;
 }

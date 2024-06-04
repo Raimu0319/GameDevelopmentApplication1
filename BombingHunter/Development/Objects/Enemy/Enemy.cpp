@@ -1,5 +1,6 @@
-#include"Enemy.h"
-#include"DxLib.h"
+#include "../../Scene/Scene.h"
+#include "Enemy.h"
+#include "DxLib.h"
 
 //コンストラクタ
 Enemy::Enemy() : animation_count(0), direction(0.0f)
@@ -76,9 +77,6 @@ void Enemy::Initialize()
 		}
 	}
 
-	//エネミーのタグ
-	Enemytag = 1;
-
 	//向きの設定
 	radian = 0.0f;
 
@@ -92,6 +90,8 @@ void Enemy::Initialize()
 
 	//初期進行方向の設定
 	direction = Vector2D(1.0f, 0.0f);
+
+	type = enemy;
 }
 
 //更新処理
@@ -162,11 +162,13 @@ void Enemy::Finalize()
 //当たり判定通知処理
 void Enemy::OnHitCollision(GameObject* hit_object)
 {
-	if (EnemyGettag() != 1)
+	//敵同士が触れた場合
+	if (hit_object->get_type() != enemy)
 	{
 		//当たった時に行う処理
 		direction = 0.0f;
 	}	
+	
 }
 
 //位置情報取得処理
@@ -201,12 +203,6 @@ void Enemy::Movement()
 
 	//進行方向に向かって、位置座標を変更する
 	location += direction;
-}
-
-//当たり判定区別
-int  Enemy::EnemyGettag()
-{
-	return Enemytag;
 }
 
 void Enemy::RandomSpwan()
