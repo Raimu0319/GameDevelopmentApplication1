@@ -68,5 +68,8 @@
     <ClInclude Include="Objects\Player\Bomb.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\CreateClass.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

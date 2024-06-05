@@ -29,12 +29,10 @@ void Scene::Initialize()
 //更新処理
 void Scene::Update()
 {
-	
-
 	//シーンに存在するオブジェクトの更新処理
-	for (GameObject* obj : objects)
+	for (int i = 0; i < objects.size(); i++)
 	{
-		obj->Update();
+			objects[i]->Update();
 	}
 
 	//オブジェクト同士の当たり判定チェック
@@ -48,27 +46,36 @@ void Scene::Update()
 	}
 
 	// 削除したいオブジェクトを削除する
-	for (int i = 0; i < objects.size(); i++)
+	/*for (int i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->GetActive() == false)
 		{
 			objects.erase(objects.begin() + i);
 			i--;
 		}
-	}
+	}*/
 
+	frame_count++;
 
-	//Zキーを押したら、敵を生成する
-	if (InputControl::GetKeyDown(KEY_INPUT_Z))
-	{
-		CreateObject<Enemy>(Vector2D(100.0f, 400.0f));
-	}
+	/*if (frame_count <= 120)
+	{	
+		Random_spawn = GetRand(6);
+
+		if (Random_spawn < 3)
+		{
+
+			CreateObject<Enemy>(Vector2D(100.0f, 400.0f));
+
+		}
+		
+		frame_count = 0;
+	}*/
 
 	//スペースキーを押したら、爆弾を生成する
-	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
+	/*if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
 	{
 		CreateObject<Bomb>(Vector2D(objects[0]->GetLocation()));
-	}
+	}*/
 
 	
 }

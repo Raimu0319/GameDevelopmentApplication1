@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "../Scene/Scene.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -65,6 +66,11 @@ void GameObject::OnHitCollision(GameObject* hit_object)
 Vector2D GameObject::GetLocation() const
 {
 	return this->location;
+}
+
+void GameObject::Getpoint(Scene* scene)
+{
+	this->scene = scene;
 }
 
 //位置情報設定処理

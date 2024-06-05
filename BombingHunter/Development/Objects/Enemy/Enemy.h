@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../GameObject.h"
+#include "../CreateClass.h"
 
-class Enemy : public GameObject
+class Enemy : public CreateClass
 {
 private:
 	//“G‰æ‘œ

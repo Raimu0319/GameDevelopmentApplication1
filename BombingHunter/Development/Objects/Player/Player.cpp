@@ -1,7 +1,9 @@
 #include "Player.h"
 #include "../Enemy/Enemy.h"
+#include "../../Scene/Scene.h"
 #include "../../Utility/InputControl.h"
 #include "DxLib.h"
+#include "Bomb.h"
 
 //コンストラクタ
 Player::Player() : animation_count(0), filp_flag(FALSE)
@@ -48,6 +50,13 @@ void Player::Update()
 	Movement();
 	//アニメーション制御
 	AnimetionControl();
+
+	//スペースキーを押したら、爆弾を生成する
+	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
+	{
+		CreateObject<Bomb>(Vector2D(this->location.x,this->location.y));
+	}
+
 }
 
 //描画処理

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../GameObject.h"
+#include "../CreateClass.h"
 
-class Player : public GameObject
+class Player : public CreateClass
 {
 private:
 	int animation[2];		//アニメーション画像

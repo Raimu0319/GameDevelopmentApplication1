@@ -109,6 +109,7 @@ void Bomb::Movement()
 	if (location.y > 480.0f)
 	{
 		direction.y = 0.0f;
+
 	}
 
 	//画像が爆発エフェクトの場合

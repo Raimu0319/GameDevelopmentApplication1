@@ -9,6 +9,8 @@ class Scene
 private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
 	Vector2D location;
+	int frame_count;			//フレームカウント
+	int Random_spawn;				
 
 public:
 	Scene();
@@ -19,10 +21,7 @@ public:
 	void Draw() const;
 	void Finalize();
 
-	//敵が消える処理
-	void deleteEnemy();
-
-private:
+public:
 	//当たり判定チェック処理
 	void HitCheckObject(GameObject* a, GameObject* b);
 
@@ -46,6 +45,8 @@ private:
 		new_object->Initialize();
 		//位置情報の設定
 		new_object->SetLocation(location);
+
+		new_object->Getpoint(this);
 
 		//オブジェクトリストに追加
 		objects.push_back(new_object);

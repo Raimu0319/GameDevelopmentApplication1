@@ -17,6 +17,8 @@ protected:
 	int image;						//描画する画像
 	int sound;						//再生する音源
 	int type;						// オブジェクトタイプ
+	class Scene* scene;					//sceneのポインタ
+	
 
 public:
 	GameObject();
@@ -26,12 +28,16 @@ public:
 	virtual void Update();			//更新処理
 	virtual void Draw() const;		//描画処理
 	virtual void Finalize();		//終了時処理
+		
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_obfect);
 
 	//位置情報取得処理
 	Vector2D GetLocation() const;
+
+	//シーンのポインタを取得
+	virtual void Getpoint(Scene* scene);
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
