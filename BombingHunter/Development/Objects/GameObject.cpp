@@ -62,6 +62,12 @@ void GameObject::OnHitCollision(GameObject* hit_object)
 	//“–‚½‚Á‚½‚És‚¤ˆ—
 }
 
+//•\¦”»’è
+int GameObject::GetActive()
+{
+	return this->Check_active;
+}
+
 //ˆÊ’uî•ñæ“¾ˆ—
 Vector2D GameObject::GetLocation() const
 {

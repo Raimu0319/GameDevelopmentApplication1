@@ -6,6 +6,7 @@
 
 #define enemy (0)			//enemyだった場合
 #define player	(1)			//playerだった場合
+#define effect	(2)			//effectだった場合
 
 //ゲームオブジェクト基底クラス
 class GameObject
@@ -18,6 +19,7 @@ protected:
 	int sound;						//再生する音源
 	int type;						// オブジェクトタイプ
 	class Scene* scene;					//sceneのポインタ
+	int Check_active;				//表示するかしないか
 	
 
 public:
@@ -32,6 +34,9 @@ public:
 
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_obfect);
+
+	//オブジェクトを画面に表示するかしないか(TRUEなら表示、FALSEなら非表示)
+	int GetActive();
 
 	//位置情報取得処理
 	Vector2D GetLocation() const;

@@ -1,14 +1,14 @@
 #include "Bomb.h"
-#include "Player.h"
+#include "../../Scene/Scene.h"
+#include "Effect.h"
+#include "../Player.h"
 #include "DxLib.h"
+#include <math.h>
 
 //コンストラクタ
 Bomb::Bomb() : animation_count(0), filp_flag(FALSE)
 {
-	animation[0] = NULL;
-	animation[1] = NULL;
-	animation[2] = NULL;
-	animation[3] = NULL;
+	animation = NULL;
 }
 
 //デストラクタ
@@ -21,19 +21,14 @@ Bomb::~Bomb()
 void Bomb::Initialize()
 {
 	//画像の読み込み
-	animation[0] = LoadGraph("Resource/Images/Bomb/Bomb.png");
-	animation[1] = LoadGraph("Resource/Images/Bomb/bakuhatu1.png");
-	animation[2] = LoadGraph("Resource/Images/Bomb/bakuhatu2.png");
-	animation[3] = LoadGraph("Resource/Images/Bomb/bakuhatu3.png");
-
+	animation = LoadGraph("Resource/Images/Bomb/Bomb.png");
+	
 	//エラーチェック
-	for (int i = 0; i < 3; i++)
+	if (animation == -1)
 	{
-		if (animation[i] == -1)
-		{
-			throw("爆弾の画像がありません\n");
-		}
+		throw("爆弾の画像がありません\n");
 	}
+	
 	
 	//向きの設定
 	radian = 0.0;
@@ -42,13 +37,17 @@ void Bomb::Initialize()
 	box_size = 64.0;
 
 	//初期画像の設定
-	image = animation[0];
+	image = animation;
 
 	//オブジェクトのタイプ
 	type = player;
 
+	//表示するかしないか
+	Check_active = TRUE;
+
 	//移動の速さ
 	direction = 2.0f;
+
 }
 
 //更新処理
@@ -83,10 +82,7 @@ void Bomb::Draw() const
 void Bomb::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation[0]);
-	DeleteGraph(animation[1]);
-	DeleteGraph(animation[2]);
-	DeleteGraph(animation[3]);
+	DeleteGraph(animation);
 }
 
 //当たり判定通知処理
@@ -98,7 +94,12 @@ void Bomb::OnHitCollision(GameObject* hit_object)
 
 		location.y += direction.y;
 
-		image = animation[1];
+		box_size = 0.0;
+
+		Check_active = FALSE;
+
+		CreateObject<Effect>(Vector2D(this->location.x, this->location.y));
+		
 	}
 }
 
@@ -110,13 +111,8 @@ void Bomb::Movement()
 	{
 		direction.y = 0.0f;
 
-	}
+		Check_active = FALSE;
 
-	//画像が爆発エフェクトの場合
-	if (image == animation[1] || image == animation[2] ||
-		image == animation[3])
-	{
-		direction.y = 0.0f;
 	}
 
 	//現在の位置座標に速さを加算する
@@ -136,13 +132,6 @@ void Bomb::AnimetionControl()
 		animation_count = 0;
 
 		//画像の切り替え
-		if (image == animation[1])
-		{
-			image = animation[2];
-		}
-		else if(image == animation[2])
-		{
-			image = animation[3];
-		}
+		
 	}
 }

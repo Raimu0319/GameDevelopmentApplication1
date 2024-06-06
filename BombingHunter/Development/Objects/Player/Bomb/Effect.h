@@ -1,18 +1,18 @@
 #pragma once
 
-#include "../GameObject.h"
+#include "../../GameObject.h"
+#include "../../CreateClass.h"
 
-class Bomb : public GameObject
+class Effect : public CreateClass
 {
 private:
-	int animation[4];		//アニメーション画像
+	int animation[3];		//アニメーション画像
 	int animation_count;   //アニメーション時間
 	int filp_flag;			//反転フラグ
-	Vector2D direction;		//進行方向
 
 public:
-	Bomb();
-	~Bomb();
+	Effect();
+	~Effect();
 
 	virtual void Initialize() override;			//初期化処理
 	virtual void Update() override;			    //更新処理

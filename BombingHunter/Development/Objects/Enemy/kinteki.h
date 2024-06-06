@@ -1,29 +1,25 @@
 #pragma once
 
-#include "../CreateClass.h"
+#include "Enemy.h"
 
-class Enemy : public CreateClass
+class Kinteki : public Enemy
 {
 private:
-	//敵画像
-	int hakoteki[2];
-	int haneteki[2];
-	int happy[2];
 	int kinteki[5];
 
 	int animation_count;		//アニメーション時間
 	Vector2D direction;		//進行方向
 
+
 public:
-	Enemy();
-	virtual ~Enemy();
+	Kinteki();
+	virtual ~Kinteki();
 
 	virtual void Initialize() override;		//初期化処理
 	virtual void Update() override;			//更新処理
 	virtual void Draw() const override;		//描画処理
 	virtual void Finalize() override;		//終了時処理
-	void RandomSpwan();				//敵をランダム出現させる
-
+	
 	//当たり判定通知処理
 	virtual void OnHitCollision(GameObject* hit_obfect);
 
@@ -39,4 +35,5 @@ private:
 	//アニメーション制御
 	void AnimetionControl();
 };
+
 

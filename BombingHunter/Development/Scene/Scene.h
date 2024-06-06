@@ -4,6 +4,10 @@
 #include <string>
 #include "../Objects/GameObject.h"
 
+#define Lane1	(400.0f)
+#define Lane2	(300.0f)
+#define Lane3	(200.0f)
+
 class Scene
 {
 private:

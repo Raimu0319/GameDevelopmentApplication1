@@ -3,7 +3,7 @@
 #include "../../Scene/Scene.h"
 #include "../../Utility/InputControl.h"
 #include "DxLib.h"
-#include "Bomb.h"
+#include "Bomb/Bomb.h"
 
 //コンストラクタ
 Player::Player() : animation_count(0), filp_flag(FALSE)
@@ -41,6 +41,8 @@ void Player::Initialize()
 	image = animation[0];
 
 	type = player;
+
+	Check_active = TRUE;
 }
 
 //更新処理
