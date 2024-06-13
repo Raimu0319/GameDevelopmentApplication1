@@ -4,9 +4,9 @@
 
 #define D_PIVOT_CENTER		//座標の原点を画像の中心にする
 
-#define enemy (0)			//enemyだった場合
-#define player	(1)			//playerだった場合
-#define effect	(2)			//effectだった場合
+#define ENEMY (0)			//enemyだった場合
+#define PLAYER	(1)			//playerだった場合
+#define EFFECT	(2)			//effectだった場合
 
 //ゲームオブジェクト基底クラス
 class GameObject
@@ -19,8 +19,7 @@ protected:
 	int sound;						//再生する音源
 	int type;						// オブジェクトタイプ
 	class Scene* scene;					//sceneのポインタ
-	int Check_active;				//表示するかしないか
-	
+	int Check_active;				//表示するかしないか	
 
 public:
 	GameObject();
@@ -42,7 +41,7 @@ public:
 	Vector2D GetLocation() const;
 
 	//シーンのポインタを取得
-	virtual void Getpoint(Scene* scene);
+	void Getpoint(class Scene* scene);
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);

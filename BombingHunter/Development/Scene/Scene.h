@@ -4,9 +4,15 @@
 #include <string>
 #include "../Objects/GameObject.h"
 
-#define Lane1	(400.0f)
-#define Lane2	(300.0f)
-#define Lane3	(200.0f)
+//敵が出てくる高さ
+#define LANE_0	(420.0f)
+#define LANE_1	(350.0f)
+#define LANE_2	(300.0f)
+#define LANE_3	(200.0f)
+
+//敵のスポーン場所
+#define LEFT_WALL	(0.0f)
+#define	RIGHT_WALL	(640.0f)
 
 class Scene
 {
@@ -14,8 +20,7 @@ private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
 	Vector2D location;
 	int frame_count;			//フレームカウント
-	int Random_spawn;				
-
+	int Random_Enemy;			
 public:
 	Scene();
 	~Scene();
@@ -45,10 +50,11 @@ public:
 			throw std::string("ゲームオブジェクトが生成できませんでした");
 		}
 
-		//初期化処理
-		new_object->Initialize();
 		//位置情報の設定
 		new_object->SetLocation(location);
+
+		//初期化処理
+		new_object->Initialize();
 
 		new_object->Getpoint(this);
 

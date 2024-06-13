@@ -1,9 +1,9 @@
 #include "Scene.h"
 #include "../Objects/Player/Player.h"
-//#include "../Objects/Enemy/Enemy.h"
+#include "../Objects/Enemy/Enemy.h"
+#include "../Objects/Enemy/Kinteki.h"
 #include "../Objects/Enemy/Hakoteki.h"
 #include "../Objects/Enemy/Haneteki.h"
-#include "../Objects/Enemy/Kinteki.h"
 #include "../Objects/Player/Bomb/Bomb.h"
 #include "../Utility/InputControl.h"
 #include "Dxlib.h"
@@ -37,7 +37,7 @@ void Scene::Update()
 	{
 			objects[i]->Update();
 	}
-
+	
 	//オブジェクト同士の当たり判定チェック
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -58,34 +58,32 @@ void Scene::Update()
 		}
 	}
 
+	//敵のランダムスポーン
 	frame_count++;
 
 	if (frame_count >= 120)
 	{	
-		Random_spawn = GetRand(6);
+		Random_Enemy = GetRand(8);
 
-		if (Random_spawn == 1)
+		if (Random_Enemy == 0)
 		{
-			CreateObject<Hakoteki>(Vector2D(100.0f, Lane1));
+			CreateObject<Kinteki>(Vector2D(0.0f, LANE_0));
 		}
-		else if (Random_spawn == 2)
+		else if (Random_Enemy == 1)
 		{
-			CreateObject<Haneteki>(Vector2D(100.0f, Lane2));
+			CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1));
 		}
-		else if (Random_spawn == 3)
+		else if (Random_Enemy == 2)
 		{
-			CreateObject<Haneteki>(Vector2D(100.0f, Lane3));
+			CreateObject<Haneteki>(Vector2D(0.0f, LANE_2));
+		}
+		else if (Random_Enemy == 3)
+		{
+			CreateObject<Haneteki>(Vector2D(0.0f, LANE_3));
 		}
 
 		frame_count = 0;
 	}
-
-	//スペースキーを押したら、爆弾を生成する
-	/*if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
-	{
-		CreateObject<Bomb>(Vector2D(objects[0]->GetLocation()));
-	}*/
-
 	
 }
 

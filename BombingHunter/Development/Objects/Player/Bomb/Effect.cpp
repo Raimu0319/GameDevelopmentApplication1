@@ -44,7 +44,7 @@ void Effect::Initialize()
 	image = animation[0];
 
 	//オブジェクトのタイプ
-	type = effect;
+	type = EFFECT;
 
 	//表示するかしないか
 	Check_active = TRUE;

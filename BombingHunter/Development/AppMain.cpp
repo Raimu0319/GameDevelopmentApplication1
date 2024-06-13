@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "Utility/InputControl.h"
+#include "Objects/Enemy/Enemy.h"
 #include "Scene/Scene.h"
 #include "Scene/Stage.h"
 

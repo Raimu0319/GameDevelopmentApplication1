@@ -1,10 +1,10 @@
 #include "../../Scene/Scene.h"
-#include "kinteki.h"
+#include "Kinteki.h"
 #include "Enemy.h"
 #include "DxLib.h"
 
 //コンストラクタ
-Kinteki::Kinteki() : animation_count(0), direction(0.0f)
+Kinteki::Kinteki()
 {
 	kinteki[0] = NULL;
 	kinteki[1] = NULL;
@@ -40,25 +40,22 @@ void Kinteki::Initialize()
 		}
 	}
 
+	//初期進行方向の設定
+	__super::Initialize();
+
 	//向きの設定
 	radian = 0.0f;
 
 	//大きさの設定
 	box_size = 32.0f;
 
-	image = kinteki[0];
-
-	//初期画像の設定
-	RandomSpwan();
-
-	//初期進行方向の設定
-	direction = Vector2D(1.0f, 0.0f);
-
 	//オブジェクトタイプの設定
-	type = enemy;
+	type = ENEMY;
 
 	//表示するかしないか
 	Check_active = TRUE;
+	
+	image = kinteki[0];
 }
 
 //更新処理
@@ -77,16 +74,6 @@ void Kinteki::Draw() const
 {
 	//親クラスの描画処理を呼び出す
 	__super::Draw();
-	/*
-	//画像の描画
-	DrawRotaGraphF(location.x, location.y, 0.6, 0.0, image, TRUE);
-
-	Vector2D upper_left = location - (box_size / 2.0f);
-	Vector2D lower_right = location + (box_size / 2.0f);
-
-	//当たり判定の可視化
-	DrawBoxAA(upper_left.x, upper_left.y, lower_right.x, lower_right.y, GetColor(255, 0, 0), FALSE);
-	*/
 }
 
 //終了時処理
@@ -105,7 +92,7 @@ void Kinteki::Finalize()
 void Kinteki::OnHitCollision(GameObject* hit_object)
 {
 	//敵同士が触れた場合
-	if (hit_object->get_type() != enemy)
+	if (hit_object->get_type() != ENEMY)
 	{
 		//当たった時に行う処理
 		direction = 0.0f;
@@ -130,23 +117,7 @@ void Kinteki::SetLocation(const Vector2D& location)
 //移動処理
 void Kinteki::Movement()
 {
-	//画面右端に到達したら、左端に戻る
-	//if (((location.x + direction.x) < box_size.x) ||(640.0f - box_size.x) < (location.x + direction.x))
-	if ((640.0f - box_size.x) < (location.x + direction.x))
-	{
-		location.x = -1.0f;
-		direction.x *= 1.0f;
-	}
-
-	if (((location.y + direction.y) < box_size.y) ||
-		(480.0f - box_size.y) < (location.y + direction.y))
-	{
-		location.x = 630;
-		direction.y *= -1.0f;
-	}
-
-	//進行方向に向かって、位置座標を変更する
-	location += direction;
+	__super::Movement();
 }
 
 //敵アニメーション制御

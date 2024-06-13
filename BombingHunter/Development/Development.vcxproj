@@ -136,10 +136,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Objects\Enemy\Bullet.cpp" />
     <ClCompile Include="Objects\Enemy\Enemy.cpp" />
-    <ClCompile Include="Objects\Enemy\hakoteki.cpp" />
-    <ClCompile Include="Objects\Enemy\haneteki.cpp" />
-    <ClCompile Include="Objects\Enemy\kinteki.cpp" />
+    <ClCompile Include="Objects\Enemy\Hakoteki.cpp" />
+    <ClCompile Include="Objects\Enemy\Haneteki.cpp" />
+    <ClCompile Include="Objects\Enemy\Kinteki.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Objects\Player\Bomb\Bomb.cpp" />
     <ClCompile Include="Objects\Player\Bomb\Effect.cpp" />
@@ -151,10 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Objects\CreateClass.h" />
+    <ClInclude Include="Objects\Enemy\Bullet.h" />
     <ClInclude Include="Objects\Enemy\Enemy.h" />
-    <ClInclude Include="Objects\Enemy\hakoteki.h" />
-    <ClInclude Include="Objects\Enemy\haneteki.h" />
-    <ClInclude Include="Objects\Enemy\kinteki.h" />
+    <ClInclude Include="Objects\Enemy\Hakoteki.h" />
+    <ClInclude Include="Objects\Enemy\Haneteki.h" />
+    <ClInclude Include="Objects\Enemy\Kinteki.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Objects\Player\Bomb\Bomb.h" />
     <ClInclude Include="Objects\Player\Bomb\Effect.h" />

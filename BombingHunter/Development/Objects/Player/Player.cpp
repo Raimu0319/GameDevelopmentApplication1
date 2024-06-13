@@ -40,7 +40,7 @@ void Player::Initialize()
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = animation[0];
 
-	type = player;
+	type = PLAYER;
 
 	Check_active = TRUE;
 }

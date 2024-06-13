@@ -31,7 +31,7 @@ void Bomb::Initialize()
 	
 	
 	//向きの設定
-	radian = 0.0;
+	radian = DX_PI / 2.0;
 
 	//当たり判定の大きさ設定
 	box_size = 64.0;
@@ -40,7 +40,7 @@ void Bomb::Initialize()
 	image = animation;
 
 	//オブジェクトのタイプ
-	type = player;
+	type = PLAYER;
 
 	//表示するかしないか
 	Check_active = TRUE;
@@ -88,7 +88,7 @@ void Bomb::Finalize()
 //当たり判定通知処理
 void Bomb::OnHitCollision(GameObject* hit_object)
 {
-	if (hit_object->get_type() == enemy)
+	if (hit_object->get_type() == ENEMY)
 	{
 		//direction = 0.0f;
 
@@ -107,12 +107,13 @@ void Bomb::OnHitCollision(GameObject* hit_object)
 void Bomb::Movement()
 {
 	//爆弾が画面外に到達したときの処理　
-	if (location.y > 480.0f)
+	if (location.y > 380.0f)
 	{
 		direction.y = 0.0f;
 
 		Check_active = FALSE;
 
+		CreateObject<Effect>(Vector2D(this->location.x, this->location.y));
 	}
 
 	//現在の位置座標に速さを加算する
