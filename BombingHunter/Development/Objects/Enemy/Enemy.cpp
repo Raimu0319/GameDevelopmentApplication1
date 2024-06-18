@@ -100,17 +100,23 @@ void Enemy::SetLocation(const Vector2D& location)
 //移動処理
 void Enemy::Movement()
 {
-	//画面右端に到達したら、左端に戻る
+	//画面右端に到達したら、削除する
 	if ((640.0f - box_size.x) < (location.x))
 	{
 		//location.x = box_size.x;
 		this->Check_active = FALSE;
 	}
 
-	//画面左端に到達したら、右端に戻る
-	if (((location.x) < box_size.x))
+	//画面左端に到達したら、削除する
+	if (location.x < box_size.x)
 	{
 		//location.x = (640.0f - box_size.x);
+		this->Check_active = FALSE;
+	}
+
+	//画面上に到達したら、削除する
+	if (location.y < 0)
+	{
 		this->Check_active = FALSE;
 	}
 

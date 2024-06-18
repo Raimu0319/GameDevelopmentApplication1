@@ -20,7 +20,8 @@ private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
 	Vector2D location;
 	int frame_count;			//フレームカウント
-	int Random_Enemy;			
+	int Random_Enemy;	
+
 public:
 	Scene();
 	~Scene();

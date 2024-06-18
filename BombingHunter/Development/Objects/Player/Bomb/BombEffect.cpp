@@ -1,10 +1,10 @@
 #include "Bomb.h"
-#include "Effect.h"
+#include "BombEffect.h"
 #include "../../Scene/Scene.h"
 #include "DxLib.h"
 
 //コンストラクタ
-Effect::Effect() : animation_count(0), filp_flag(FALSE)
+BombEffect::BombEffect() : animation_count(0), filp_flag(FALSE)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -12,13 +12,13 @@ Effect::Effect() : animation_count(0), filp_flag(FALSE)
 }
 
 //デストラクタ
-Effect::~Effect()
+BombEffect::~BombEffect()
 {
 
 }
 
 //初期化処理
-void Effect::Initialize()
+void BombEffect::Initialize()
 {
 	//画像の読み込み
 	animation[0] = LoadGraph("Resource/Images/Bomb/bakuhatu1.png");
@@ -52,7 +52,7 @@ void Effect::Initialize()
 }
 
 //更新処理
-void Effect::Update()
+void BombEffect::Update()
 {
 	////移動処理
 	//Movement();
@@ -61,7 +61,7 @@ void Effect::Update()
 }
 
 //描画処理
-void Effect::Draw() const
+void BombEffect::Draw() const
 {
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
@@ -80,7 +80,7 @@ void Effect::Draw() const
 }
 
 //終了時処理
-void Effect::Finalize()
+void BombEffect::Finalize()
 {
 	//使用した画像を解放する
 	DeleteGraph(animation[0]);
@@ -89,7 +89,7 @@ void Effect::Finalize()
 }
 
 //当たり判定通知処理
-void Effect::OnHitCollision(GameObject* hit_object)
+void BombEffect::OnHitCollision(GameObject* hit_object)
 {
 	/*if (hit_object->get_type() == FALSE)
 	{
@@ -98,30 +98,13 @@ void Effect::OnHitCollision(GameObject* hit_object)
 }
 
 //移動処理
-void Effect::Movement()
+void BombEffect::Movement()
 {
-	////爆弾が画面外に到達したときの処理　
-	//if (location.y > 480.0f)
-	//{
-	//	direction.y = 0.0f;
-
-	//	Check_active = FALSE;
-
-	//}
-
-	////画像が爆発エフェクトの場合
-	//if (image == animation[1] || image == animation[2] ||
-	//	image == animation[3])
-	//{
-	//	direction.y = 0.0f;
-	//}
-
-	////現在の位置座標に速さを加算する
-	//location.y += direction.y;
+	
 }
 
 //アニメーション制御
-void Effect::AnimetionControl()
+void BombEffect::AnimetionControl()
 {
 	//フレームカウントを加算する
 	animation_count++;

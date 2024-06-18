@@ -1,5 +1,6 @@
 #include "../../Scene/Scene.h"
 #include "Hakoteki.h"
+#include "Bullet.h"
 #include "DxLib.h"
 
 //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -61,6 +62,9 @@ void Hakoteki::Update()
 	//ƒAƒjƒ[ƒVƒ‡ƒ“§Œä
 	AnimetionControl();
 
+	//’e‚Ì¶¬
+	BulletCreate();
+
 }
 
 //•`‰æˆ—
@@ -86,12 +90,34 @@ void Hakoteki::Finalize()
 void Hakoteki::OnHitCollision(GameObject* hit_object)
 {
 	//“G“¯Žm‚ªG‚ê‚½ê‡
-	if (hit_object->get_type() != ENEMY)
+	if (hit_object->get_type() == PLAYER)
 	{
 		//“–‚½‚Á‚½Žž‚És‚¤ˆ—
 		direction = 0.0f;
 
 		Check_active = FALSE;
+	}
+
+}
+
+void Hakoteki::BulletCreate()
+{
+	wait_count++;
+
+	//’e‚Ì¶¬ˆ—
+	if (wait_count >= 120)
+	{
+		int r;
+
+		r = GetRand(5);
+
+		if (r <= 2)
+		{
+			//’e‚Ì¶¬
+			CreateObject<Bullet>(Vector2D(this->location.x, this->location.y));
+		}
+
+		wait_count = 0;
 	}
 
 }

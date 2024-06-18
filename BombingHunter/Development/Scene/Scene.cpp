@@ -58,6 +58,15 @@ void Scene::Update()
 		}
 	}
 
+	// ハコテキから弾が発射されたか確認する
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->get_type() == ENEMY_BULLET)
+		{
+			objects[i]->SetDirection(objects[0]->GetLocation());
+		}
+	}
+
 	//敵のランダムスポーン
 	frame_count++;
 
@@ -139,6 +148,7 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 		//当たったことをオブジェクトに通知する
 		a->OnHitCollision(b);
 		b->OnHitCollision(a);
+
 	}
 }
 #else

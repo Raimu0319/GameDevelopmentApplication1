@@ -3,7 +3,7 @@
 #include "../../GameObject.h"
 #include "../../CreateClass.h"
 
-class Effect : public CreateClass
+class BombEffect : public CreateClass
 {
 private:
 	int animation[3];		//アニメーション画像
@@ -11,8 +11,8 @@ private:
 	int filp_flag;			//反転フラグ
 
 public:
-	Effect();
-	~Effect();
+	BombEffect();
+	~BombEffect();
 
 	virtual void Initialize() override;			//初期化処理
 	virtual void Update() override;			    //更新処理

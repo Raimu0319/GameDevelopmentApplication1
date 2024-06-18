@@ -85,6 +85,12 @@ void GameObject::SetLocation(const Vector2D& location)
 	this->location = location;
 }
 
+//“G’e‚ÌˆÚ“®•ûŒüæ“¾ˆ—
+void GameObject::SetDirection(const Vector2D& P_Location)
+{
+	
+}
+
 //“–‚½‚è”»’è‚Ì‘å‚«‚³‚ğ“n‚·
 Vector2D GameObject::GetBoxSize() const
 {

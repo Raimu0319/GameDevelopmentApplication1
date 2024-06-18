@@ -1,6 +1,6 @@
 #include "Bomb.h"
 #include "../../Scene/Scene.h"
-#include "Effect.h"
+#include "BombEffect.h"
 #include "../Player.h"
 #include "DxLib.h"
 #include <math.h>
@@ -62,6 +62,8 @@ void Bomb::Update()
 //描画処理
 void Bomb::Draw() const
 {
+
+
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
 
@@ -98,7 +100,7 @@ void Bomb::OnHitCollision(GameObject* hit_object)
 
 		Check_active = FALSE;
 
-		CreateObject<Effect>(Vector2D(this->location.x, this->location.y));
+		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 		
 	}
 }
@@ -113,7 +115,7 @@ void Bomb::Movement()
 
 		Check_active = FALSE;
 
-		CreateObject<Effect>(Vector2D(this->location.x, this->location.y));
+		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 	}
 
 	//現在の位置座標に速さを加算する

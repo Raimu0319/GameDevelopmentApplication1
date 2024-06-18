@@ -7,6 +7,7 @@
 #define ENEMY (0)			//enemyだった場合
 #define PLAYER	(1)			//playerだった場合
 #define EFFECT	(2)			//effectだった場合
+#define ENEMY_BULLET	(3)	//enemyの弾だった場合
 
 //ゲームオブジェクト基底クラス
 class GameObject
@@ -45,6 +46,9 @@ public:
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
+
+	//敵弾の移動方向取得処理
+	virtual void SetDirection(const Vector2D& P_Location);
 
 	//当たり判定の大きさを取得する
 	Vector2D GetBoxSize() const;
