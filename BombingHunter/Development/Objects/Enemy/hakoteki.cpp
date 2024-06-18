@@ -140,6 +140,11 @@ void Hakoteki::Movement()
 	__super::Movement();
 }
 
+void Hakoteki::GetPlayerpoint(Player* player)
+{
+	this->player = player;
+}
+
 //敵アニメーション制御
 void Hakoteki::AnimetionControl()
 {

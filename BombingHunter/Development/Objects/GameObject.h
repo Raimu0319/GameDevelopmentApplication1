@@ -19,7 +19,8 @@ protected:
 	int image;						//描画する画像
 	int sound;						//再生する音源
 	int type;						// オブジェクトタイプ
-	class Scene* scene;					//sceneのポインタ
+	class Scene* scene;				//sceneのポインタ
+	//class Player* player;			//playerのポインタ
 	int Check_active;				//表示するかしないか	
 
 public:
@@ -42,7 +43,10 @@ public:
 	Vector2D GetLocation() const;
 
 	//シーンのポインタを取得
-	void Getpoint(class Scene* scene);
+	void GetScenepoint(class Scene* scene);
+
+	//プレイヤーのポインタを取得
+	//void GetPlayerpoint(class Player* player);
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);

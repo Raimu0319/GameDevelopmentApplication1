@@ -98,13 +98,9 @@ void Bullet::SetLocation(const Vector2D& location)
 //“G’e‚ÌˆÚ“®•ûŒüŽæ“¾ˆ—
 void Bullet::SetDirection(const Vector2D& P_Location)
 {
-	Vector2D vec;
-	float r;
-	vec = P_Location - this->location / 120;
-
-	r = atan2f(vec.y, vec.x);
-
-	direction = -(sinf(r), cosf(r));
+	Vector2D vec=  P_Location - this->location;
+	float r = atan2f(vec.y, vec.x);
+	direction = Vector2D((sinf(r)), -(cosf(r)));
 
 }
 

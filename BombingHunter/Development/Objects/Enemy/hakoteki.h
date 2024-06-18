@@ -10,6 +10,7 @@ private:
 	int wait_count;			//弾の発射時間
 	int animation_count;		//アニメーション時間
 	Vector2D direction;		//進行方向
+	class Player* player;			//プレイヤーのポインタ
 
 public:
 	Hakoteki();
@@ -31,6 +32,8 @@ public:
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
+
+	void GetPlayerpoint(Player* player);
 
 private:
 	//移動処理

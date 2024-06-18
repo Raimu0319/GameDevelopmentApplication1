@@ -8,8 +8,6 @@ private:
 	//敵画像
 	int bullet[2];
 	int animation_count;		//アニメーション時間
-	Vector2D direction;			//進行方向
-	Vector2D P_location;		//プレイヤーの位置座標
 	Vector2D target;			//弾の発射地点
 
 public:

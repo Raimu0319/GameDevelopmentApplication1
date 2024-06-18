@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "../Scene/Scene.h"
+#include "Player/Player.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -74,10 +75,15 @@ Vector2D GameObject::GetLocation() const
 	return this->location;
 }
 
-void GameObject::Getpoint(Scene* scene)
+void GameObject::GetScenepoint(Scene* scene)
 {
 	this->scene = scene;
 }
+
+//void GameObject::GetPlayerpoint(Player* player)
+//{
+//	this->player = player;
+//}
 
 //位置情報設定処理
 void GameObject::SetLocation(const Vector2D& location)

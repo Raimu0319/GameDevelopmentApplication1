@@ -25,8 +25,7 @@ Scene::~Scene()
 void Scene::Initialize()
 {
 	//プレイヤーを生成する
-	CreateObject<Player>(Vector2D(320.0f, 60.0f));
-
+	player = CreateObject<Player>(Vector2D(320.0f, 60.0f));
 }
 
 //更新処理
@@ -80,7 +79,7 @@ void Scene::Update()
 		}
 		else if (Random_Enemy == 1)
 		{
-			CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1));
+			CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
 		}
 		else if (Random_Enemy == 2)
 		{

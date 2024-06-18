@@ -21,6 +21,7 @@ private:
 	Vector2D location;
 	int frame_count;			//フレームカウント
 	int Random_Enemy;	
+	Player* player;				//プレイヤーのポインタ
 
 public:
 	Scene();
@@ -57,7 +58,8 @@ public:
 		//初期化処理
 		new_object->Initialize();
 
-		new_object->Getpoint(this);
+		//sceneのポインタを渡す
+		new_object->GetScenepoint(this);
 
 		//オブジェクトリストに追加
 		objects.push_back(new_object);
