@@ -1,5 +1,6 @@
 #include "../../Scene/Scene.h"
 #include "Hakoteki.h"
+#include "../Player/Player.h"
 #include "Bullet.h"
 #include "DxLib.h"
 
@@ -48,6 +49,9 @@ void Hakoteki::Initialize()
 
 	//表示するかしないか
 	Check_active = TRUE;
+
+	//スコアの設定
+	score = 200;
 	
 	//初期画像の設定
 	image = hakoteki[0];
@@ -113,8 +117,13 @@ void Hakoteki::BulletCreate()
 
 		if (r <= 2)
 		{
+			//プレイヤーとハコテキの距離を求めて角度を求める
+			//プレイヤーとハコテキの距離を求める
+			Vector2D vec = player->GetLocation() - this->location;
+			float r = atan2f(vec.y, vec.x);							//ｘ/ｙをしてラジアンを計算する
+			Vector2D B_direction = Vector2D((cosf(r)), (sinf(r)));	//上の計算結果の値をcosfとsinfに渡してあげると角度が出る
 			//弾の生成
-			CreateObject<Bullet>(Vector2D(this->location.x, this->location.y));
+ 			CreateObject<Bullet>(Vector2D(this->location.x, this->location.y))->SetDirection(B_direction);
 		}
 
 		wait_count = 0;

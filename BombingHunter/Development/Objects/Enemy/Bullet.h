@@ -29,7 +29,7 @@ public:
 	void SetLocation(const Vector2D& location);
 
 	//“G’e‚ÌˆÚ“®•ûŒüæ“¾ˆ—
-	void SetDirection(const Vector2D& P_Location) override;
+	void SetDirection(const Vector2D& P_Location);
 
 private:
 	//ˆÚ“®ˆ—

@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Utility/InputControl.h"
 #include "Objects/Enemy/Enemy.h"
+#include "Objects/Timer/Time.h"
 #include "Scene/Scene.h"
 #include "Scene/Stage.h"
 
@@ -24,6 +25,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	//ローカル変数定義
 	Scene* scene = new Scene();			//シーン情報
 	Stage* stage = new Stage();			//ステージ情報
+	Time* time = new Time();			//時間情報
 	int result = 0;							//終了状態情報
 
 	//描画先を裏画面から始めるように指定する
@@ -37,6 +39,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		//ステージの初期化
 		stage->Initialize();
 
+		//時間の初期化
+		time->Initialize();
+
 		//メインループ（ウィンドウの異常発生 or　ESCキーが押されたら、ループ終了）
 		while (ProcessMessage() != -1 && CheckHitKey(KEY_INPUT_ESCAPE) !=
 			TRUE)
@@ -47,6 +52,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			//シーンの更新処理
 			scene->Update();
 
+			//時間更新処理
+			time->Update();
+
 			//画面の初期化
 			ClearDrawScreen();
 
@@ -55,6 +63,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			//シーンの描画処理
 			scene->Draw();
+
+			//時間の描画処理
+			time->Draw();
 
 			//裏画面の内容を表画面に反映する
 			ScreenFlip();
@@ -74,10 +85,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	{
 		scene->Finalize();
 		stage->Finalize();
+		time->Finalize();
 		delete scene;
 		delete stage;
+		delete time;
 		scene = nullptr;
 		stage = nullptr;
+		time = nullptr;
 	}
 
 	//DXライブラリの終了時処理

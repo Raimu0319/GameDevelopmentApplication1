@@ -33,6 +33,7 @@ public:
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);
 
+	//プレイヤーのポインタを取得
 	void GetPlayerpoint(Player* player);
 
 private:

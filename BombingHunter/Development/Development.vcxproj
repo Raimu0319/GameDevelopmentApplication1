@@ -145,6 +145,8 @@
     <ClCompile Include="Objects\Player\Bomb\Bomb.cpp" />
     <ClCompile Include="Objects\Player\Bomb\BombEffect.cpp" />
     <ClCompile Include="Objects\Player\Player.cpp" />
+    <ClCompile Include="Objects\Score\Score.cpp" />
+    <ClCompile Include="Objects\Timer\Time.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\Stage.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="Objects\Player\Bomb\Bomb.h" />
     <ClInclude Include="Objects\Player\Bomb\BombEffect.h" />
     <ClInclude Include="Objects\Player\Player.h" />
+    <ClInclude Include="Objects\Score\Score.h" />
+    <ClInclude Include="Objects\Timer\Time.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\Stage.h" />
     <ClInclude Include="Utility\InputControl.h" />

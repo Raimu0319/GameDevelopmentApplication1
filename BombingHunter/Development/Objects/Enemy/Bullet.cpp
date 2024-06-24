@@ -20,7 +20,7 @@ void Bullet::Initialize()
 {
 
 	//画像の読み込み
-	bullet[0] = LoadGraph("Resource/Images/Effect/eff1.png");
+	bullet[0] = LoadGraph("Resource/Images/Enemy/tekitama1.png");
 
 	//エラーチェック
 	if (bullet[0] == -1)
@@ -98,10 +98,7 @@ void Bullet::SetLocation(const Vector2D& location)
 //敵弾の移動方向取得処理
 void Bullet::SetDirection(const Vector2D& P_Location)
 {
-	Vector2D vec=  P_Location - this->location;
-	float r = atan2f(vec.y, vec.x);
-	direction = Vector2D((sinf(r)), -(cosf(r)));
-
+	direction = P_Location;
 }
 
 //移動処理

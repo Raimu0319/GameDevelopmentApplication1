@@ -21,7 +21,7 @@ private:
 	Vector2D location;
 	int frame_count;			//フレームカウント
 	int Random_Enemy;	
-	Player* player;				//プレイヤーのポインタ
+	class Player* player;				//プレイヤーのポインタ
 
 public:
 	Scene();

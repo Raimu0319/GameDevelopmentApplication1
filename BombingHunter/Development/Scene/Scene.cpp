@@ -52,17 +52,9 @@ void Scene::Update()
 	{
 		if (objects[i]->GetActive() == FALSE)
 		{
-			objects.erase(objects.begin() + i);
-			i--;
-		}
-	}
-
-	// ハコテキから弾が発射されたか確認する
-	for (int i = 0; i < objects.size(); i++)
-	{
-		if (objects[i]->get_type() == ENEMY_BULLET)
-		{
-			objects[i]->SetDirection(objects[0]->GetLocation());
+			//オブジェクトリストの先頭(begin)からi番目のオブジェクトを削除(erase)する
+			objects.erase(objects.begin() + i);		//eraseでリストから削除すると勝手に配列をつめてくれる
+			i--;									//配列を詰めると最後の部分に空きができるからデクリメントする
 		}
 	}
 
@@ -91,6 +83,12 @@ void Scene::Update()
 		}
 
 		frame_count = 0;
+	}
+
+	//スペースキーを押したら、爆弾を生成する
+	if (InputControl::GetKeyDown(KEY_INPUT_Z))
+	{
+		CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
 	}
 	
 }

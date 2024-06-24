@@ -55,7 +55,11 @@ void Kinteki::Initialize()
 	//表示するかしないか
 	Check_active = TRUE;
 	
+	//画像の初期設定
 	image = kinteki[0];
+
+	//スコアの設定
+	score = 1500;
 }
 
 //更新処理
@@ -66,7 +70,6 @@ void Kinteki::Update()
 
 	//アニメーション制御
 	AnimetionControl();
-
 }
 
 //描画処理
@@ -85,7 +88,6 @@ void Kinteki::Finalize()
 	{
 		DeleteGraph(kinteki[i]);
 	}
-
 }
 
 //当たり判定通知処理

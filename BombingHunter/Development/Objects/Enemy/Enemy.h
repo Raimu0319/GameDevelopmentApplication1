@@ -8,6 +8,7 @@ protected:
 	int animation_count;	//アニメーション時間
 	Vector2D direction;		//進行方向
 	int Random_Wall;		//敵のスポーン場所（右から出るか左から出るか）
+	int score;				//敵のスコア
 
 public:
 

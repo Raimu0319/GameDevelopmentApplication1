@@ -61,6 +61,16 @@ void Haneteki::Initialize()
 	
 	//ハネテキかハーピィか
 	RandomSpwan();
+
+	//スコア設定
+	if (image == haneteki[0] || image == haneteki[1])
+	{
+		score = 30;
+	}
+	else
+	{
+		score = -100;
+	}
 }
 
 //更新処理
