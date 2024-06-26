@@ -59,6 +59,9 @@ void Bullet::Update()
 //描画処理
 void Bullet::Draw() const
 {
+	//情報を基に敵画像を描画する
+	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, 0);
+
 	//親クラスの描画処理を呼び出す
 	__super::Draw();
 }
@@ -66,7 +69,7 @@ void Bullet::Draw() const
 //終了時処理
 void Bullet::Finalize()
 {
-		DeleteGraph(bullet[0]);
+	DeleteGraph(bullet[0]);
 }
 
 //当たり判定通知処理
@@ -77,6 +80,8 @@ void Bullet::OnHitCollision(GameObject* hit_object)
 	{
 		//当たった時に行う処理
 		direction = 0.0f;
+
+		scene->time_set += scene->time_set / 12 * -1;
 
 		Check_active = FALSE;
 	}
@@ -104,7 +109,28 @@ void Bullet::SetDirection(const Vector2D& P_Location)
 //移動処理
 void Bullet::Movement()
 {
-	__super::Movement();
+	//画面右端に到達したら、削除する
+	if ((640.0f - box_size.x) < (location.x))
+	{
+		//location.x = box_size.x;
+		this->Check_active = FALSE;
+	}
+
+	//画面左端に到達したら、削除する
+	if (location.x < box_size.x)
+	{
+		//location.x = (640.0f - box_size.x);
+		this->Check_active = FALSE;
+	}
+
+	//画面上に到達したら、削除する
+	if (location.y < 0)
+	{
+		this->Check_active = FALSE;
+	}
+
+	//進行方向に向かって、位置座標を変更する
+	location += direction;
 }
 
 //敵アニメーション制御

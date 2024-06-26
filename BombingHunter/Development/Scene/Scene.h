@@ -19,9 +19,28 @@ class Scene
 private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
 	Vector2D location;
-	int frame_count;			//フレームカウント
-	int Random_Enemy;	
-	class Player* player;				//プレイヤーのポインタ
+private:
+	int img_score;					//スコア画像
+	int img_high_score;					//スコア画像
+	int score;						//スコア
+	int sum_score;					//総スコア
+	int high_score;					//ハイスコア
+	int number[10];						//０～９までの数字画像
+
+	int time_count;			//秒数カウント
+	int timer_img;			//タイマー画像
+	int startTime;			//プログラムが開始された時間
+	int baisu;
+	
+	int time_sec1;			//秒数画像表示
+	int time_sec2;			//秒数画像表示
+
+	int frame_count;				//フレームカウント
+	int Random_Enemy;				//敵のランダム出現用変数
+	class Player* player;			//プレイヤーのポインタ
+	
+public:
+	int time_set;			//制限時間設定
 
 public:
 	Scene();
@@ -31,6 +50,13 @@ public:
 	void Update();
 	void Draw() const;
 	void Finalize();
+
+	void Score_count(int score);		//スコア加算処理
+	int High_score();					//現在のスコアがハイスコアか
+	void Score_Draw() const;					//スコア描画処理
+	
+	void Time_Draw() const;				//時間描画処理
+	void Time_Anim();					//時間表示処理
 
 public:
 	//当たり判定チェック処理

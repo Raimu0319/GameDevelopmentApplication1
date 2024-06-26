@@ -56,7 +56,6 @@ void Player::Update()
 	//スペースキーを押したら、爆弾を生成する
 	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
 	{
-
 		CreateObject<Bomb>(Vector2D(this->location.x,this->location.y));
 	}
 }
@@ -91,7 +90,7 @@ void Player::Finalize()
 //当たり判定通知処理
 void Player::OnHitCollision(GameObject* hit_object)
 {
-	hit_object->get_type();
+	
 }
 
 //移動処理

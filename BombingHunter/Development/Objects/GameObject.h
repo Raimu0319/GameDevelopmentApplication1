@@ -8,6 +8,7 @@
 #define PLAYER	(1)			//playerだった場合
 #define EFFECT	(2)			//effectだった場合
 #define ENEMY_BULLET	(3)	//enemyの弾だった場合
+#define BOMB			(4) //爆弾だった場合
 
 //ゲームオブジェクト基底クラス
 class GameObject
@@ -44,9 +45,6 @@ public:
 
 	//シーンのポインタを取得
 	void GetScenepoint(class Scene* scene);
-
-	//プレイヤーのポインタを取得
-	//void GetPlayerpoint(class Player* player);
 
 	//位置情報変更処理
 	void SetLocation(const Vector2D& location);

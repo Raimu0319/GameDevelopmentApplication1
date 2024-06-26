@@ -108,11 +108,13 @@ void Haneteki::Finalize()
 //“–‚½‚è”»’è’Ê’mˆ—
 void Haneteki::OnHitCollision(GameObject* hit_object)
 {
-	//“G“¯Žm‚ªG‚ê‚½ê‡
-	if (hit_object->get_type() != ENEMY)
+	//”š’e‚ÆG‚ê‚½ê‡
+	if (hit_object->get_type() == BOMB)
 	{
 		//“–‚½‚Á‚½Žž‚És‚¤ˆ—
 		direction = 0.0f;
+
+		scene->Score_count(this->score);
 
 		Check_active = FALSE;
 	}

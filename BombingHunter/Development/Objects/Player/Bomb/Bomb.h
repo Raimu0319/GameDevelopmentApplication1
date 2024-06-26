@@ -10,6 +10,7 @@ private:
 	int animation_count;   //アニメーション時間
 	int filp_flag;			//反転フラグ
 	Vector2D direction;		//進行方向
+	
 
 public:
 	Bomb();

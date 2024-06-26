@@ -57,9 +57,6 @@
     <ClCompile Include="Objects\Enemy\Bullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Timer\Time.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\Score\Score.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Enemy\Bullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Timer\Time.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Score\Score.h">

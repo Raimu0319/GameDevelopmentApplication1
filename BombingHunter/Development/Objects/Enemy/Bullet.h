@@ -2,13 +2,14 @@
 
 #include "Enemy.h"
 
-class Bullet : public Enemy
+class Bullet : public CreateClass
 {
 private:
 	//敵画像
 	int bullet[2];
 	int animation_count;		//アニメーション時間
 	Vector2D target;			//弾の発射地点
+	Vector2D direction;			//進行方向
 
 public:
 	Bullet();

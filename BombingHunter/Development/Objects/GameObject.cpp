@@ -80,11 +80,6 @@ void GameObject::GetScenepoint(Scene* scene)
 	this->scene = scene;
 }
 
-//void GameObject::GetPlayerpoint(Player* player)
-//{
-//	this->player = player;
-//}
-
 //ˆÊ’uî•ñİ’èˆ—
 void GameObject::SetLocation(const Vector2D& location)
 {

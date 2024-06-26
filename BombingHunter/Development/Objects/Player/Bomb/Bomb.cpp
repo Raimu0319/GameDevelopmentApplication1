@@ -29,7 +29,6 @@ void Bomb::Initialize()
 		throw("爆弾の画像がありません\n");
 	}
 	
-	
 	//向きの設定
 	radian = DX_PI / 2.0;
 
@@ -40,7 +39,7 @@ void Bomb::Initialize()
 	image = animation;
 
 	//オブジェクトのタイプ
-	type = PLAYER;
+	type = BOMB;
 
 	//表示するかしないか
 	Check_active = TRUE;
@@ -62,8 +61,6 @@ void Bomb::Update()
 //描画処理
 void Bomb::Draw() const
 {
-
-
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
 

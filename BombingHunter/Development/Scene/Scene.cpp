@@ -9,7 +9,7 @@
 #include "Dxlib.h"
 
 //コンストラクタ
-Scene::Scene() : objects()
+Scene::Scene() : objects(),sum_score(0)
 {
 
 }
@@ -26,11 +26,48 @@ void Scene::Initialize()
 {
 	//プレイヤーを生成する
 	player = CreateObject<Player>(Vector2D(320.0f, 60.0f));
+
+	//初期画像の読み込み
+	number[0] = LoadGraph("Resource/Images/Score/0.png");
+	number[1] = LoadGraph("Resource/Images/Score/1.png");
+	number[2] = LoadGraph("Resource/Images/Score/2.png");
+	number[3] = LoadGraph("Resource/Images/Score/3.png");
+	number[4] = LoadGraph("Resource/Images/Score/4.png");
+	number[5] = LoadGraph("Resource/Images/Score/5.png");
+	number[6] = LoadGraph("Resource/Images/Score/6.png");
+	number[7] = LoadGraph("Resource/Images/Score/7.png");
+	number[8] = LoadGraph("Resource/Images/Score/8.png");
+	number[9] = LoadGraph("Resource/Images/Score/9.png");
+
+	img_score = LoadGraph("Resource/Images/Score/font-21.png");			//スコア画像
+	img_high_score = LoadGraph("Resource/Images/Score/hs.png");			//ハイスコア画像
+	timer_img = LoadGraph("Resource/Images/TimeLimit/timer-03.png");	//タイマー画像
+
+	//エラーチェック
+	for (int i = 0; i < 10; i++)
+	{
+		if (number[i] == -1)
+		{
+			throw("時間表示画像がありません\n");
+		}
+	}
+	
+	time_set = 60;					//初期時間の設定
+
+	startTime = GetNowCount();		//プログラム開始時間
+
+	time_sec1 = time_set / 10;		//10の位
+	
+	time_sec2 = time_set % 10;		//1の位
+
+	baisu = 1;					//秒数カウント
 }
 
 //更新処理
 void Scene::Update()
-{
+{	
+	Time_Anim();		//時間処理
+
 	//シーンに存在するオブジェクトの更新処理
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -93,11 +130,6 @@ void Scene::Update()
 	
 }
 
-//void Scene::deleteEnemy()
-//{
-//	delete Enemy;
-//}
-
 //描画処理
 void Scene::Draw() const
 {
@@ -106,6 +138,104 @@ void Scene::Draw() const
 	{
 		obj->Draw();
 	}
+
+	Score_Draw();		//スコアの描画
+	Time_Draw();		//時間の描画
+}
+
+void Scene::Score_Draw() const
+{
+	
+	DrawRotaGraphF(130, 460, 1.0, 0.0, img_score, TRUE);								//スコア画像
+	DrawRotaGraphF(400, 460, 1.0, 0.0, img_high_score, TRUE);			//ハイスコア画像
+
+
+	//スコア表示
+	if (sum_score < 99999)
+	{
+		int div = sum_score;
+		DrawRotaGraphF(250, 460, 1.0, 0.0, number[div % 10], TRUE);				
+		div = div / 10;
+		DrawRotaGraphF(235, 460, 1.0, 0.0, number[div % 10], TRUE);			
+		div = div / 10;
+		DrawRotaGraphF(220, 460, 1.0, 0.0, number[div % 10], TRUE);				
+		div = div / 10;
+		DrawRotaGraphF(205, 460, 1.0, 0.0, number[div % 10], TRUE);		
+		div = div / 10;
+		DrawRotaGraphF(190, 460, 1.0, 0.0, number[div % 10], TRUE);
+	}
+	else
+	{
+		//スコアがカンストした場合
+		DrawRotaGraphF(250, 460, 1.0, 0.0, number[9], TRUE);				
+		DrawRotaGraphF(235, 460, 1.0, 0.0, number[9], TRUE);				
+		DrawRotaGraphF(220, 460, 1.0, 0.0, number[9], TRUE);				
+		DrawRotaGraphF(205, 460, 1.0, 0.0, number[9], TRUE);				
+		DrawRotaGraphF(140, 460, 1.0, 0.0, number[9], TRUE);				
+	}	
+
+	//ハイスコア表示
+	int div_high = high_score;
+	DrawRotaGraphF(520, 460, 1.0, 0.0, number[div_high % 10], TRUE);
+	div_high = div_high / 10;
+	DrawRotaGraphF(505, 460, 1.0, 0.0, number[div_high % 10], TRUE);
+	div_high = div_high / 10;
+	DrawRotaGraphF(490, 460, 1.0, 0.0, number[div_high % 10], TRUE);
+	div_high = div_high / 10;
+	DrawRotaGraphF(475, 460, 1.0, 0.0, number[div_high % 10], TRUE);
+	div_high = div_high / 10;
+	DrawRotaGraphF(460, 460, 1.0, 0.0, number[div_high % 10], TRUE);
+}
+
+void Scene::Time_Draw() const
+{
+	//タイマー画像
+	DrawRotaGraphF(20, 460, 0.5, 0.0, timer_img, TRUE);
+	//秒数表示
+	DrawRotaGraphF(45, 460, 1.0, 0.0, number[time_sec1], TRUE);
+	DrawRotaGraphF(60, 460, 1.0, 0.0, number[time_sec2], TRUE);
+}
+
+//スコア加算処理
+void Scene::Score_count(int score)
+{
+	this->sum_score += score;
+
+	if (sum_score < 0)
+	{
+		sum_score = 0;
+	}
+}
+
+//ハイスコア処理
+int Scene::High_score()
+{
+	//ハイスコアより現在のスコアの方が大きいかどうか
+	if (high_score < sum_score)
+	{
+		high_score = sum_score;
+	}
+
+	return high_score;
+}
+
+//残り時間表示処理
+void Scene::Time_Anim()
+{
+	//プログラム開始時間と現在の時間を比べて差をだしてどれぐらい時間がたったか計算する
+	int now_count = GetNowCount() - startTime;
+
+	//1000ms=1sec
+	if (now_count >= 1000 * baisu)
+	{
+		time_set--;
+
+		baisu++;
+	}
+
+	time_sec1 = time_set / 10;			//10の位
+
+	time_sec2 = time_set % 10;			//1の位
 }
 
 //終了時処理
@@ -127,6 +257,16 @@ void Scene::Finalize()
 	//動的配列の開放
 	objects.clear();
 
+	//画像の削除
+	for (int i = 0; i < 10; i++)
+	{
+		DeleteGraph(number[i]);
+	}
+
+	DeleteGraph(img_score);
+	DeleteGraph(img_high_score);
+	DeleteGraph(timer_img);
+
 }
 
 #ifdef D_PIVOT_CENTER
@@ -145,7 +285,6 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 		//当たったことをオブジェクトに通知する
 		a->OnHitCollision(b);
 		b->OnHitCollision(a);
-
 	}
 }
 #else
@@ -158,4 +297,3 @@ void Scene::HitCheckObject(GameObject* a, GameObject* b)
 }
 Vector2D a_lower_right = a->GetLocation() + a->GetBoxSize();
 #endif // D_PIVOT_CENTER
-
