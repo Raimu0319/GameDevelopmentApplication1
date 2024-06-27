@@ -40,9 +40,17 @@ void Player::Initialize()
 	//初期画像の設定
 	image = animation[0];
 
+	//オブジェクトのタイプ
 	type = PLAYER;
 
+	//消すか消さないか
 	Check_active = TRUE;
+
+	//移動の速さ
+	velocity = 0.0f;
+
+	//爆弾の生成上限
+	bomb_stop = 0;
 }
 
 //更新処理
@@ -56,7 +64,10 @@ void Player::Update()
 	//スペースキーを押したら、爆弾を生成する
 	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
 	{
-		CreateObject<Bomb>(Vector2D(this->location.x,this->location.y));
+		if (bomb_stop == 0)
+		{
+			CreateObject<Bomb>(Vector2D(this->location.x,this->location.y))->SetDirection(this->velocity);
+		}
 	}
 }
 
@@ -96,23 +107,20 @@ void Player::OnHitCollision(GameObject* hit_object)
 //移動処理
 void Player::Movement()
 {
-	//移動の速さ
-	Vector2D velocity = 0.0f;
-
 	//左右移動
 	if (InputControl::GetKey(KEY_INPUT_LEFT))
 	{
-		velocity.x += -1.0f;
+		velocity.x = -1.0f;
 		filp_flag = TRUE;
 	}
 	else if (InputControl::GetKey(KEY_INPUT_RIGHT))
 	{
-		velocity.x += 1.0f;
+		velocity.x = 1.0f;
 		filp_flag = FALSE;
 	}
 	else
 	{
-		velocity.x += 0.0f;
+		velocity.x = 0.0f;
 	}
 
 	//画面外にいかないように制限する

@@ -71,7 +71,14 @@ void Scene::Update()
 	//シーンに存在するオブジェクトの更新処理
 	for (int i = 0; i < objects.size(); i++)
 	{
-			objects[i]->Update();
+		objects[i]->Update();
+
+		//爆弾が生成されているかどうか
+		if (objects[i]->get_type() == BOMB)
+		{
+			//爆弾の生成を制限する
+			objects[0]->bomb_stop = 1;
+		}
 	}
 	
 	//オブジェクト同士の当たり判定チェック
@@ -89,6 +96,13 @@ void Scene::Update()
 	{
 		if (objects[i]->GetActive() == FALSE)
 		{
+			//削除されたオブジェクトが爆弾かどうか
+			if (objects[i]->get_type() == BOMB)
+			{
+				//爆弾の生成を制限を解除する
+				objects[0]->bomb_stop = 0;
+			}
+
 			//オブジェクトリストの先頭(begin)からi番目のオブジェクトを削除(erase)する
 			objects.erase(objects.begin() + i);		//eraseでリストから削除すると勝手に配列をつめてくれる
 			i--;									//配列を詰めると最後の部分に空きができるからデクリメントする
@@ -100,6 +114,7 @@ void Scene::Update()
 
 	if (frame_count >= 120)
 	{	
+		//0～8の数字をランダムで取得
 		Random_Enemy = GetRand(8);
 
 		if (Random_Enemy == 0)
@@ -266,7 +281,6 @@ void Scene::Finalize()
 	DeleteGraph(img_score);
 	DeleteGraph(img_high_score);
 	DeleteGraph(timer_img);
-
 }
 
 #ifdef D_PIVOT_CENTER

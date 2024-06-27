@@ -20,10 +20,13 @@ Enemy::~Enemy()
 //初期化処理
 void Enemy::Initialize()
 {
+	//1～0の数字をランダムで取得
 	int r = GetRand(1);
 
+	//エネミーのスピードをランダムに設定する
 	float speed = (GetRand(2) % 2 * 0.5) + 1.0f;
 
+	//rが1なら左から右に移動	rが0なら右から左に移動
 	if (r == 1)
 	{
 		// 右向き
@@ -46,7 +49,6 @@ void Enemy::Update()
 
 	//アニメーション制御
 	AnimetionControl();
-
 }
 
 //描画処理

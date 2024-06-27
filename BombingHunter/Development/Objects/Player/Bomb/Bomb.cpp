@@ -44,9 +44,8 @@ void Bomb::Initialize()
 	//表示するかしないか
 	Check_active = TRUE;
 
-	//移動の速さ
-	direction = 2.0f;
-
+	//加速度の初期設定
+	direction = 0;	
 }
 
 //更新処理
@@ -54,8 +53,6 @@ void Bomb::Update()
 {
 	//移動処理
 	Movement();
-	//アニメーション制御
-	AnimetionControl();
 }
 
 //描画処理
@@ -84,21 +81,60 @@ void Bomb::Finalize()
 	DeleteGraph(animation);
 }
 
+void Bomb::GetPlayerpoint(Player* player)
+{
+	this->player = player;
+}
+
 //当たり判定通知処理
 void Bomb::OnHitCollision(GameObject* hit_object)
 {
 	if (hit_object->get_type() == ENEMY)
 	{
-		//direction = 0.0f;
-
 		location.y += direction.y;
 
+		//当たり判定の削除
 		box_size = 0.0;
 
+		//このオブジェクトを消す
 		Check_active = FALSE;
 
+		//エフェクトの生成
 		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
-		
+	}
+}
+ 
+void Bomb::SetDirection(Vector2D P_velocity)
+{
+	//プレイヤーが移動しながら爆弾を生成したか
+	if (P_velocity.x == 0.0f)
+	{
+		//まっすぐ下に落ちていく
+		direction.y = 2.0f;
+		direction_add.y = 0.0f;
+	}
+	else if (P_velocity.x > 0)
+	{
+		//プレイヤーの進行方向に応じてふんわりと落ちていく
+		direction.x = P_velocity.x;
+		direction_add.y = 0.02f;
+
+		//爆弾の角度調整
+		radian = atan2f(direction.y, direction.x);							//ｘ/ｙをしてラジアンを計算する
+
+		filp_flag = FALSE;
+	}
+	else
+	{
+		//プレイヤーの進行方向に応じてふんわりと落ちていく
+		direction.x = P_velocity.x;
+		direction_add.y = 0.02f;
+		//Vector2D B_dire = direction;
+
+		//爆弾の角度調整
+		radian = atan2f(direction.y, direction.x);							//ｘ/ｙをしてラジアンを計算する
+
+		filp_flag = TRUE;
 	}
 }
 
@@ -110,28 +146,56 @@ void Bomb::Movement()
 	{
 		direction.y = 0.0f;
 
-		Check_active = FALSE;
+		this->Check_active = FALSE;
 
 		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 	}
 
-	//現在の位置座標に速さを加算する
-	location.y += direction.y;
-}
-
-//アニメーション制御
-void Bomb::AnimetionControl()
-{
-	//フレームカウントを加算する
-	animation_count++;
-
-	//60フレーム目に到達したら
-	if (animation_count >= 30)
+	//画面右端に到達したら、削除する
+	if ((640.0f - box_size.x) < (location.x))
 	{
-		//countのリセット
-		animation_count = 0;
+		//location.x = box_size.x;
+		this->Check_active = FALSE;
 
-		//画像の切り替え
-		
+		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 	}
+
+	//画面左端に到達したら、削除する
+	if (location.x < box_size.x)
+	{
+		//location.x = (640.0f - box_size.x);
+		this->Check_active = FALSE;
+
+		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
+	}
+
+	//画面上に到達したら、削除する
+	if (location.y < 0)
+	{
+		this->Check_active = FALSE;
+
+		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
+	}
+
+	//落ちる速度が2.0f以下の場合どんどん加速していく
+	if (direction.y <= 2.0f)
+	{
+		direction.y += direction_add.y;
+	}
+
+	
+	if (radian != DX_PI / 2.0)
+	{
+		if (DX_PI / 2.0 < radian)
+		{
+			radian -= ((DX_PI / 2.0) - radian) / 50;
+		}
+		else
+		{
+			radian += ((DX_PI / 2.0) - radian) / 50;
+		}
+	}
+
+	//現在の位置座標に速さを加算する
+	location += direction;
 }

@@ -9,7 +9,9 @@ private:
 	int animation[2];		//アニメーション画像
 	int animation_count; //アニメーション時間
 	int filp_flag;			//反転フラグ
-	int bomb_stop;			//爆弾の生成制限
+	
+public:
+	Vector2D velocity;
 
 public:
 	Player();

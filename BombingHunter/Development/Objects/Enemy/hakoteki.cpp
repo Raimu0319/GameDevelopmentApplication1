@@ -126,6 +126,10 @@ void Hakoteki::BulletCreate()
 			Vector2D B_direction = Vector2D((cosf(r)), (sinf(r)));	//上の計算結果の値をcosfとsinfに渡してあげると角度が出る
 			//弾の生成
  			CreateObject<Bullet>(Vector2D(this->location.x, this->location.y))->SetDirection(B_direction);
+
+			//atan2fは角度を求める
+			//cosfがyの比率を求める
+			//sinfがxの比率を求める
 		}
 
 		wait_count = 0;

@@ -22,7 +22,10 @@ protected:
 	int type;						// オブジェクトタイプ
 	class Scene* scene;				//sceneのポインタ
 	//class Player* player;			//playerのポインタ
-	int Check_active;				//表示するかしないか	
+	int Check_active;				//表示するかしないか
+
+public:
+	int bomb_stop;			//爆弾の生成制限
 
 public:
 	GameObject();
@@ -50,7 +53,7 @@ public:
 	void SetLocation(const Vector2D& location);
 
 	//敵弾の移動方向取得処理
-	virtual void SetDirection(const Vector2D& P_Location);
+	void SetDirection(const Vector2D& P_Location);
 
 	//当たり判定の大きさを取得する
 	Vector2D GetBoxSize() const;
