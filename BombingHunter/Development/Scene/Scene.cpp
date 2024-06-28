@@ -43,6 +43,12 @@ void Scene::Initialize()
 	img_high_score = LoadGraph("Resource/Images/Score/hs.png");			//ハイスコア画像
 	timer_img = LoadGraph("Resource/Images/TimeLimit/timer-03.png");	//タイマー画像
 
+	finish_img = LoadGraph("Resource/Images/Evaluation/Finish.png");
+	result_img[0] = LoadGraph("Resource/Images/Evaluation/BAD.png");
+	result_img[1] = LoadGraph("Resource/Images/Evaluation/OK.png");
+	result_img[2] = LoadGraph("Resource/Images/Evaluation/GOOD.png");
+	result_img[3] = LoadGraph("Resource/Images/Evaluation/Perfect.png");
+
 	//エラーチェック
 	for (int i = 0; i < 10; i++)
 	{
@@ -61,6 +67,8 @@ void Scene::Initialize()
 	time_sec2 = time_set % 10;		//1の位
 
 	baisu = 1;					//秒数カウント
+
+	oneplay = 0;
 }
 
 //更新処理
@@ -110,37 +118,40 @@ void Scene::Update()
 	}
 
 	//敵のランダムスポーン
-	frame_count++;
+	if (time_set >= 0)
+	{
+		frame_count++;
 
-	if (frame_count >= 120)
-	{	
-		//0～8の数字をランダムで取得
-		Random_Enemy = GetRand(8);
-
-		if (Random_Enemy == 0)
+		if (frame_count >= 120)
 		{
-			CreateObject<Kinteki>(Vector2D(0.0f, LANE_0));
+			//0～8の数字をランダムで取得
+			Random_Enemy = GetRand(8);
+
+			if (Random_Enemy == 0)
+			{
+				CreateObject<Kinteki>(Vector2D(0.0f, LANE_0));
+			}
+			else if (Random_Enemy == 1)
+			{
+				CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
+			}
+			else if (Random_Enemy == 2)
+			{
+				CreateObject<Haneteki>(Vector2D(0.0f, LANE_2));
+			}
+			else if (Random_Enemy == 3)
+			{
+				CreateObject<Haneteki>(Vector2D(0.0f, LANE_3));
+			}
+
+			frame_count = 0;
 		}
-		else if (Random_Enemy == 1)
+
+		//スペースキーを押したら、爆弾を生成する
+		if (InputControl::GetKeyDown(KEY_INPUT_Z))
 		{
 			CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
 		}
-		else if (Random_Enemy == 2)
-		{
-			CreateObject<Haneteki>(Vector2D(0.0f, LANE_2));
-		}
-		else if (Random_Enemy == 3)
-		{
-			CreateObject<Haneteki>(Vector2D(0.0f, LANE_3));
-		}
-
-		frame_count = 0;
-	}
-
-	//スペースキーを押したら、爆弾を生成する
-	if (InputControl::GetKeyDown(KEY_INPUT_Z))
-	{
-		CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
 	}
 	
 }
@@ -161,7 +172,7 @@ void Scene::Draw() const
 void Scene::Score_Draw() const
 {
 	
-	DrawRotaGraphF(130, 460, 1.0, 0.0, img_score, TRUE);								//スコア画像
+	DrawRotaGraphF(130, 460, 1.0, 0.0, img_score, TRUE);				//スコア画像
 	DrawRotaGraphF(400, 460, 1.0, 0.0, img_high_score, TRUE);			//ハイスコア画像
 
 
@@ -216,6 +227,7 @@ void Scene::Score_count(int score)
 {
 	this->sum_score += score;
 
+	//スコアが０以下にならないように設定
 	if (sum_score < 0)
 	{
 		sum_score = 0;
@@ -256,6 +268,8 @@ void Scene::Time_Anim()
 //終了時処理
 void Scene::Finalize()
 {
+	startTime = GetNowCount();		//プログラム開始時間
+
 	//動的配列が空なら処理を終了する
 	if (objects.empty())
 	{
@@ -278,11 +292,66 @@ void Scene::Finalize()
 		DeleteGraph(number[i]);
 	}
 
+	/*for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(result_img[i]);
+	}*/
+
 	DeleteGraph(img_score);
 	DeleteGraph(img_high_score);
 	DeleteGraph(timer_img);
+	//DeleteGraph(finish_img);
 }
 
+void Scene::Finish()
+{
+	//終了時処理を一度だけ実行
+	if (oneplay == 0)
+	{
+		Finalize();
+
+		oneplay = 1;
+	}
+
+	DrawRotaGraphF(320, 240, 0.5, 0.0, finish_img, TRUE);
+
+	//ここでサウンドを流す
+
+	//プログラム開始時間と現在の時間を比べて差をだしてどれぐらい時間がたったか計算する
+	int now_count = GetNowCount() - startTime;
+
+	if (now_count >= 3000)
+	{
+		DeleteGraph(finish_img);
+
+		if (sum_score < 1000)
+		{
+			DrawRotaGraphF(320, 240, 0.5, 0.0, result_img[0], TRUE);
+		}
+		else if (sum_score > 1000 && sum_score < 1500)
+		{
+			DrawRotaGraphF(320, 240, 0.5, 0.0, result_img[1], TRUE);
+		}
+		else if (sum_score >= 1500)
+		{
+			DrawRotaGraphF(320, 240, 0.5, 0.0, result_img[2], TRUE);
+		}
+		else if (sum_score >= 3000)
+		{
+			DrawRotaGraphF(320, 240, 0.5, 0.0, result_img[3], TRUE);
+		}
+
+		if (now_count >= 4000)
+		{
+			DrawFormatString(200, 300, GetColor(0, 0, 0), "スペースキーを押してリスタート");
+			if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
+			{
+				Initialize();
+			}
+		}
+	}
+	
+}
 #ifdef D_PIVOT_CENTER
 //当たり判定チェック処理（矩形の中心で当たり判定を取る）
 void Scene::HitCheckObject(GameObject* a, GameObject* b)

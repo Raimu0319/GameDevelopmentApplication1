@@ -13,6 +13,13 @@
 //敵のスポーン場所
 #define LEFT_WALL	(0.0f)
 #define	RIGHT_WALL	(640.0f)
+enum result
+{
+	BAD,
+	OK,
+	GOOD,
+	PERFECT
+};
 
 class Scene
 {
@@ -38,7 +45,14 @@ private:
 	int frame_count;				//フレームカウント
 	int Random_Enemy;				//敵のランダム出現用変数
 	class Player* player;			//プレイヤーのポインタ
-	
+
+	int finish_img;					//ゲーム終了画像
+	int result_img[4];					//最終結果画像
+
+	int wait_time;					//一定時間ストップ
+
+	int oneplay;					//一度だけ実行
+		
 public:
 	int time_set;			//制限時間設定
 
@@ -49,7 +63,7 @@ public:
 	void Initialize();
 	void Update();
 	void Draw() const;
-	void Finalize();
+	void Finalize();					//プログラム終了時処理
 
 	void Score_count(int score);		//スコア加算処理
 	int High_score();					//現在のスコアがハイスコアか
@@ -57,6 +71,8 @@ public:
 	
 	void Time_Draw() const;				//時間描画処理
 	void Time_Anim();					//時間表示処理
+
+	void Finish();						//ゲーム終了時処理
 
 public:
 	//当たり判定チェック処理

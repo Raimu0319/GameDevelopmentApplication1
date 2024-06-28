@@ -1,5 +1,6 @@
 #include "../../Scene/Scene.h"
 #include "Haneteki.h"
+#include "EnemyEffect/EnemyEffect.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -112,8 +113,13 @@ void Haneteki::OnHitCollision(GameObject* hit_object)
 		//当たった時に行う処理
 		direction = 0.0f;
 
+		//スコア加算処理
 		scene->Score_count(this->score);
 
+		//敵が消えるエフェクト
+		CreateObject<EnemyEffect>(this->location)->SetImage(this->image, this->flip_flag);
+
+		//オブジェクトの削除
 		Check_active = FALSE;
 	}
 }

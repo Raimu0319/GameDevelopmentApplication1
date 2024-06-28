@@ -54,18 +54,6 @@ void Enemy::Update()
 //描画処理
 void Enemy::Draw() const
 {
-	//画像反転フラグ
-	int flip_flag = FALSE;
-
-	//進行方向によって、反転状態を決定する
-	if (direction.x > 0.0f)
-	{
-		flip_flag = FALSE;
-	}
-	else
-	{
-		flip_flag = TRUE;
-	}
 
 	//情報を基に敵画像を描画する
 	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, flip_flag);
@@ -102,17 +90,28 @@ void Enemy::SetLocation(const Vector2D& location)
 //移動処理
 void Enemy::Movement()
 {
-	//画面右端に到達したら、削除する
-	if ((640.0f - box_size.x) < (location.x))
+	//画像反転フラグ
+	flip_flag = FALSE;
+
+	//進行方向によって、反転状態を決定する
+	if (direction.x > 0.0f)
 	{
-		//location.x = box_size.x;
+		flip_flag = FALSE;
+	}
+	else
+	{
+		flip_flag = TRUE;
+	}
+
+	//画面右端に到達したら、削除する
+	if ((640.0f - box_size.x) < (location.x / 2))
+	{
 		this->Check_active = FALSE;
 	}
 
 	//画面左端に到達したら、削除する
-	if (location.x < box_size.x)
+	if (location.x < (box_size.x / 2))
 	{
-		//location.x = (640.0f - box_size.x);
 		this->Check_active = FALSE;
 	}
 

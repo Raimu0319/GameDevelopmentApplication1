@@ -41,24 +41,42 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		while (ProcessMessage() != -1 && CheckHitKey(KEY_INPUT_ESCAPE) !=
 			TRUE)
 		{
-			//入力機のの更新
-			InputControl::Update();
+			if (scene->time_set >= 0)
+			{
+				//入力機の更新
+				InputControl::Update();
 
-			//シーンの更新処理
-			scene->Update();
+				//シーンの更新処理
+				scene->Update();
 
-			//画面の初期化
-			ClearDrawScreen();
+				//画面の初期化
+				ClearDrawScreen();
 
-			//ステージの描画処理
-			stage->Draw();
+				//ステージの描画処理
+				stage->Draw();
 
-			//シーンの描画処理
-			scene->Draw();
+				//シーンの描画処理
+				scene->Draw();
 
-			//裏画面の内容を表画面に反映する
-			ScreenFlip();
+				//裏画面の内容を表画面に反映する
+				ScreenFlip();
+			}
+			else
+			{
+				//入力機のの更新
+				InputControl::Update();
 
+				//画面の初期化
+				ClearDrawScreen();
+
+				//ステージの描画処理
+				stage->Draw();
+
+				scene->Finish();
+
+				//裏画面の内容を表画面に反映する
+				ScreenFlip();
+			}
 		}
 	}
 	catch (const char* error_log)

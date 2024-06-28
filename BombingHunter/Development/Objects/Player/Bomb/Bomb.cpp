@@ -8,7 +8,7 @@
 //コンストラクタ
 Bomb::Bomb() : animation_count(0), filp_flag(FALSE)
 {
-	animation = NULL;
+	bomb_img = NULL;
 }
 
 //デストラクタ
@@ -21,10 +21,10 @@ Bomb::~Bomb()
 void Bomb::Initialize()
 {
 	//画像の読み込み
-	animation = LoadGraph("Resource/Images/Bomb/Bomb.png");
+	bomb_img = LoadGraph("Resource/Images/Bomb/Bomb.png");
 	
 	//エラーチェック
-	if (animation == -1)
+	if (bomb_img == -1)
 	{
 		throw("爆弾の画像がありません\n");
 	}
@@ -33,10 +33,10 @@ void Bomb::Initialize()
 	radian = DX_PI / 2.0;
 
 	//当たり判定の大きさ設定
-	box_size = 64.0;
+	box_size = 54.0;
 
 	//初期画像の設定
-	image = animation;
+	image = bomb_img;
 
 	//オブジェクトのタイプ
 	type = BOMB;
@@ -59,7 +59,7 @@ void Bomb::Update()
 void Bomb::Draw() const
 {
 	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
+	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, filp_flag);
 
 	//デバック用
 #if _DEBUG
@@ -78,7 +78,7 @@ void Bomb::Draw() const
 void Bomb::Finalize()
 {
 	//使用した画像を解放する
-	DeleteGraph(animation);
+	DeleteGraph(bomb_img);
 }
 
 void Bomb::GetPlayerpoint(Player* player)
@@ -134,7 +134,7 @@ void Bomb::SetDirection(Vector2D P_velocity)
 		//爆弾の角度調整
 		radian = atan2f(direction.y, direction.x);							//ｘ/ｙをしてラジアンを計算する
 
-		filp_flag = TRUE;
+		filp_flag = FALSE;
 	}
 }
 
@@ -151,22 +151,10 @@ void Bomb::Movement()
 		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 	}
 
-	//画面右端に到達したら、削除する
-	if ((640.0f - box_size.x) < (location.x))
+	//画面外に出ないようにする処理
+	if ((640.0f - (box_size.x / 2)) < (location.x) || location.x < (box_size.x / 2))
 	{
-		//location.x = box_size.x;
-		this->Check_active = FALSE;
-
-		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
-	}
-
-	//画面左端に到達したら、削除する
-	if (location.x < box_size.x)
-	{
-		//location.x = (640.0f - box_size.x);
-		this->Check_active = FALSE;
-
-		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
+		direction.x = 0.0f;
 	}
 
 	//画面上に到達したら、削除する
@@ -182,17 +170,16 @@ void Bomb::Movement()
 	{
 		direction.y += direction_add.y;
 	}
-
 	
 	if (radian != DX_PI / 2.0)
 	{
 		if (DX_PI / 2.0 < radian)
 		{
-			radian -= ((DX_PI / 2.0) - radian) / 50;
+			radian -= ((DX_PI / 2.0) - radian) / -80;
 		}
 		else
 		{
-			radian += ((DX_PI / 2.0) - radian) / 50;
+			radian += ((DX_PI / 2.0) - radian) / 80;
 		}
 	}
 

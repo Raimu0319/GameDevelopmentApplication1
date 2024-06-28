@@ -6,7 +6,7 @@
 class Bomb : public CreateClass
 {
 private:
-	int animation;		//アニメーション画像
+	int bomb_img;		//爆弾画像
 	int animation_count;   //アニメーション時間
 	int filp_flag;			//反転フラグ
 	Vector2D direction;		//進行方向

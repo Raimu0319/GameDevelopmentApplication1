@@ -138,6 +138,8 @@
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Objects\Enemy\Bullet.cpp" />
     <ClCompile Include="Objects\Enemy\Enemy.cpp" />
+    <ClCompile Include="Objects\Enemy\EnemyEffect\EnemyEffect.cpp" />
+    <ClCompile Include="Objects\Enemy\EnemyEffect\E_ScoreEffect.cpp" />
     <ClCompile Include="Objects\Enemy\Hakoteki.cpp" />
     <ClCompile Include="Objects\Enemy\Haneteki.cpp" />
     <ClCompile Include="Objects\Enemy\Kinteki.cpp" />
@@ -155,6 +157,8 @@
     <ClInclude Include="Objects\CreateClass.h" />
     <ClInclude Include="Objects\Enemy\Bullet.h" />
     <ClInclude Include="Objects\Enemy\Enemy.h" />
+    <ClInclude Include="Objects\Enemy\EnemyEffect\EnemyEffect.h" />
+    <ClInclude Include="Objects\Enemy\EnemyEffect\E_ScoreEffect.h" />
     <ClInclude Include="Objects\Enemy\Hakoteki.h" />
     <ClInclude Include="Objects\Enemy\Haneteki.h" />
     <ClInclude Include="Objects\Enemy\Kinteki.h" />
