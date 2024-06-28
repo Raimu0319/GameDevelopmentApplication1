@@ -21,6 +21,7 @@ public:
 	void Draw() const;			//描画処理
 	void Finalize();			//終了時処理	
 
+	void MoveEffect();				//移動処理
 	void SetImage(int img,int filp_flag);		//画像の取得処理
 private:
 	void EraseAnim();			//エネミーの削除処理

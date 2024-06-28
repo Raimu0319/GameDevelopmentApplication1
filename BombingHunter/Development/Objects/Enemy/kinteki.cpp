@@ -1,6 +1,7 @@
 #include "../../Scene/Scene.h"
 #include "Kinteki.h"
 #include "EnemyEffect/EnemyEffect.h"
+#include "EnemyEffect/E_ScoreEffect.h"
 #include "Enemy.h"
 #include "DxLib.h"
 
@@ -105,6 +106,9 @@ void Kinteki::OnHitCollision(GameObject* hit_object)
 
 		//敵が消えるエフェクト
 		CreateObject<EnemyEffect>(this->location)->SetImage(this->image, this->flip_flag);
+
+		//自身のスコア表示
+		CreateObject<E_ScoreEffect>(this->location)->SetScoreImage(this->score);
 
 		//オブジェクトの削除
 		Check_active = FALSE;

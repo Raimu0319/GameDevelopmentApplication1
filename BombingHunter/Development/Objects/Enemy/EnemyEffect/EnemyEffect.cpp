@@ -22,6 +22,7 @@ void EnemyEffect::Initialize()
 
 void EnemyEffect::Update()
 {
+	MoveEffect();
 	EraseAnim();
 }
 
@@ -50,6 +51,24 @@ void EnemyEffect::SetImage(int img,int filp_flag)
 	}
 }
 
+void EnemyEffect::MoveEffect()
+{
+	if (shake == 0)
+	{
+		location.x += 5.0f;
+
+		shake = 1;
+	}
+	else
+	{
+		location.x -= 5.0f;
+
+		shake = 0;
+	}
+
+	location.y += 2.0f;
+}
+
 void EnemyEffect::EraseAnim()
 {
 	//フレームカウントを加算する
@@ -63,22 +82,6 @@ void EnemyEffect::EraseAnim()
 
 		//徐々に透明にしていく
 		toumeido -= 50;
-
-		if (shake == 0)
-		{
-			location.x += 5.0f;
-			
-			shake = 1;
-		}
-		else
-		{
-			location.x -= 5.0f;
-
-			shake = 0;
-		}
-
-		location.y += 2.0f;
-
 	}
 
 	if (toumeido <= 0)
