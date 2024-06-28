@@ -1,5 +1,6 @@
 #include "../../Scene/Scene.h"
 #include "Bullet.h"
+#include "EnemyEffect/B_Effect.h"
 #include "../Player/Player.h"
 #include "DxLib.h"
 
@@ -18,7 +19,6 @@ Bullet::~Bullet()
 //初期化処理
 void Bullet::Initialize()
 {
-
 	//画像の読み込み
 	bullet[0] = LoadGraph("Resource/Images/Enemy/tekitama1.png");
 
@@ -27,7 +27,6 @@ void Bullet::Initialize()
 	{
 		throw("テキ弾の画像がありません\n");
 	}
-
 
 	//向きの設定
 	radian = 0.0f;
@@ -53,7 +52,6 @@ void Bullet::Update()
 
 	//アニメーション制御
 	AnimetionControl();
-
 }
 
 //描画処理
@@ -83,9 +81,10 @@ void Bullet::OnHitCollision(GameObject* hit_object)
 
 		scene->time_set += scene->time_set / 12 * -1;
 
+		CreateObject<B_Effect>(this->location);
+
 		Check_active = FALSE;
 	}
-
 }
 
 //位置情報取得処理

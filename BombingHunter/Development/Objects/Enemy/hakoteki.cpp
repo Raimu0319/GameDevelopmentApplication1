@@ -182,7 +182,6 @@ void Hakoteki::AnimetionControl()
 		//count‚ÌƒŠƒZƒbƒg
 		animation_count = 0;
 
-
 		//‰æ‘œ‚ÌØ‚è‘Ö‚¦
 		if (image == hakoteki[0])
 		{

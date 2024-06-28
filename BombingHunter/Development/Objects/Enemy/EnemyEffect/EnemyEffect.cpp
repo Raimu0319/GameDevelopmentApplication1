@@ -55,18 +55,18 @@ void EnemyEffect::MoveEffect()
 {
 	if (shake == 0)
 	{
-		location.x += 5.0f;
+		location.x += 7.0f;
 
 		shake = 1;
 	}
 	else
 	{
-		location.x -= 5.0f;
+		location.x -= 7.0f;
 
 		shake = 0;
 	}
 
-	location.y += 2.0f;
+	location.y += 0.5f;
 }
 
 void EnemyEffect::EraseAnim()
