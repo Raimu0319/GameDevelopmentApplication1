@@ -54,7 +54,7 @@ void GameObject::Draw() const
 //I—¹ˆ—
 void GameObject::Finalize()
 {
-
+	
 }
 
 //“–‚½‚è”»’è’Ê’mˆ—

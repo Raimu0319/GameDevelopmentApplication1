@@ -20,6 +20,8 @@ void B_Effect::Initialize()
 	b_eff_img[1] = LoadGraph("Resource/Images/Effect/eff2.png");
 	b_eff_img[2] = LoadGraph("Resource/Images/Effect/eff3.png");
 
+	type = EFFECT;		//オブジェクトタイプの設定
+
 	Check_active = TRUE;				//表示するかしないか
 
 	image = b_eff_img[0];

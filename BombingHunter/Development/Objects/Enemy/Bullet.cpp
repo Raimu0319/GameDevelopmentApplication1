@@ -22,6 +22,9 @@ void Bullet::Initialize()
 	//画像の読み込み
 	bullet[0] = LoadGraph("Resource/Images/Enemy/tekitama1.png");
 
+	//SEの読み込み
+	hit_SE = LoadSoundMem("Resource/sounds/bishi.wav");		//テキ弾ヒットサウンド
+
 	//エラーチェック
 	if (bullet[0] == -1)
 	{
@@ -67,7 +70,9 @@ void Bullet::Draw() const
 //終了時処理
 void Bullet::Finalize()
 {
+	//画像とSEの削除
 	DeleteGraph(bullet[0]);
+	DeleteSoundMem(hit_SE);
 }
 
 //当たり判定通知処理
@@ -79,11 +84,13 @@ void Bullet::OnHitCollision(GameObject* hit_object)
 		//当たった時に行う処理
 		direction = 0.0f;
 
-		scene->time_set += scene->time_set / 12 * -1;
+		scene->time_set += scene->time_set / 12 * -1;		//時間減少
 
-		CreateObject<B_Effect>(this->location);
+		PlaySoundMem(hit_SE, DX_PLAYTYPE_BACK, TRUE);		//SEの再生
 
-		Check_active = FALSE;
+		CreateObject<B_Effect>(this->location);				//エフェクトの生成
+
+		Check_active = FALSE;		//オブジェクトを消す
 	}
 }
 

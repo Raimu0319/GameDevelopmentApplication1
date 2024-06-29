@@ -7,7 +7,8 @@ class Player : public CreateClass
 {
 private:
 	int animation[2];		//アニメーション画像
-	int animation_count; //アニメーション時間
+	int bomb_SE;			//爆弾生成サウンド
+	int animation_count;	 //アニメーション時間
 	int filp_flag;			//反転フラグ
 	
 public:

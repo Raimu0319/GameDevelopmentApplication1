@@ -22,6 +22,8 @@ void Bomb::Initialize()
 {
 	//画像の読み込み
 	bomb_img = LoadGraph("Resource/Images/Bomb/Bomb.png");
+
+	explosion_SE = LoadSoundMem("Resource/sounds/explosion.wav");		//爆弾爆発サウンド
 	
 	//エラーチェック
 	if (bomb_img == -1)
@@ -77,8 +79,9 @@ void Bomb::Draw() const
 //終了時処理
 void Bomb::Finalize()
 {
-	//使用した画像を解放する
+	//使用した画像とSEを解放する
 	DeleteGraph(bomb_img);
+	DeleteSoundMem(explosion_SE);
 }
 
 void Bomb::GetPlayerpoint(Player* player)
@@ -98,6 +101,9 @@ void Bomb::OnHitCollision(GameObject* hit_object)
 
 		//このオブジェクトを消す
 		Check_active = FALSE;
+
+		//SEの再生
+		PlaySoundMem(explosion_SE,DX_PLAYTYPE_BACK,TRUE);
 
 		//エフェクトの生成
 		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
@@ -147,6 +153,9 @@ void Bomb::Movement()
 		direction.y = 0.0f;
 
 		this->Check_active = FALSE;
+
+		//SEの再生
+		PlaySoundMem(explosion_SE, DX_PLAYTYPE_BACK, TRUE);
 
 		CreateObject<BombEffect>(Vector2D(this->location.x, this->location.y));
 	}

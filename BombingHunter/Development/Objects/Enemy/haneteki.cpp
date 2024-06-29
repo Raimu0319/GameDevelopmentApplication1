@@ -28,9 +28,11 @@ void Haneteki::Initialize()
 	//画像の読み込み
 	haneteki[0] = LoadGraph("Resource/Images/Enemy/haneteki1.png");
 	haneteki[1] = LoadGraph("Resource/Images/Enemy/haneteki2.png");
+	haneteki_SE = LoadSoundMem("Resource/sounds/teki_gahee.wav");		//ハネテキ撃破SE
 
 	happy[0] = LoadGraph("Resource/Images/Enemy/happy1.png");
 	happy[1] = LoadGraph("Resource/Images/Enemy/happy2.png");
+	hapy_SE = LoadSoundMem("Resource/sounds/pokan.wav");			//ハーピィ撃破SE
 
 	//エラーチェック
 	for (i = 0; i < 2; i++)
@@ -64,14 +66,18 @@ void Haneteki::Initialize()
 	//ハネテキかハーピィか
 	RandomSpwan();
 
-	//スコア設定
+	//スコアとSE設定
 	if (image == haneteki[0] || image == haneteki[1])
 	{
 		score = 30;
+
+		sound = haneteki_SE;
 	}
 	else
 	{
 		score = -100;
+
+		sound = hapy_SE;
 	}
 }
 
@@ -103,6 +109,9 @@ void Haneteki::Finalize()
 		DeleteGraph(haneteki[i]);
 		DeleteGraph(happy[i]);
 	}
+
+	DeleteSoundMem(haneteki_SE);
+	DeleteSoundMem(hapy_SE);
 }
 
 //当たり判定通知処理
@@ -116,6 +125,9 @@ void Haneteki::OnHitCollision(GameObject* hit_object)
 
 		//スコア加算処理
 		scene->Score_count(this->score);
+
+		//SEの再生
+		PlaySoundMem(sound, DX_PLAYTYPE_BACK, TRUE);
 
 		//敵が消えるエフェクト
 		CreateObject<EnemyEffect>(this->location)->SetImage(this->image, this->flip_flag);

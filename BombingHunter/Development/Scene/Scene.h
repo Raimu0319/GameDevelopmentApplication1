@@ -27,6 +27,10 @@ private:
 	std::vector<GameObject*> objects;		//オブジェクトリスト
 	Vector2D location;
 private:
+	int stage_sound;			//メインBGM
+	int finish_se;				//終了時SE
+	int result_se[4];				//リザルトSE 
+
 	int img_score;					//スコア画像
 	int img_high_score;					//スコア画像
 	int score;						//スコア
@@ -43,7 +47,6 @@ private:
 	int time_sec2;			//秒数画像表示
 
 	int frame_count;				//フレームカウント
-	int Random_Enemy;				//敵のランダム出現用変数
 	class Player* player;			//プレイヤーのポインタ
 
 	int finish_img;					//ゲーム終了画像
@@ -51,7 +54,8 @@ private:
 
 	int wait_time;					//一定時間ストップ
 
-	int oneplay;					//一度だけ実行
+	int Finalize_count;				//終了時処理を一度だけ実行
+	int se_count;				//リザルトが一度実行されたか	
 		
 public:
 	int time_set;			//制限時間設定
@@ -66,7 +70,7 @@ public:
 	void Finalize();					//プログラム終了時処理
 
 	void Score_count(int score);		//スコア加算処理
-	int High_score();					//現在のスコアがハイスコアか
+	void High_score();					//現在のスコアがハイスコアか
 	void Score_Draw() const;					//スコア描画処理
 	
 	void Time_Draw() const;				//時間描画処理

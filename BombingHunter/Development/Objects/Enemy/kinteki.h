@@ -6,6 +6,7 @@ class Kinteki : public Enemy
 {
 private:
 	int kinteki[5];
+	int kinteki_SE;					//キンテキサウンドSE
 
 	int animation_count;		//アニメーション時間
 	Vector2D direction;		//進行方向

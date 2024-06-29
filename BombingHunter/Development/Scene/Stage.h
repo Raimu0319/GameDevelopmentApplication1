@@ -4,10 +4,9 @@
 
 class Stage 
 {
-
-
 private:
 	int stage_image;
+	int stage_sound;
 
 public:
 	Stage();

@@ -33,6 +33,8 @@ void Kinteki::Initialize()
 	kinteki[3] = LoadGraph("Resource/Images/Enemy/kinteki3.png");
 	kinteki[4] = LoadGraph("Resource/Images/Enemy/kinteki4.png");
 
+	kinteki_SE = LoadSoundMem("Resource/sounds/arrows_perfect03_short.wav");	//キンテキサウンドSE
+
 	//エラーチェック
 	for (i = 0; i < 5; i++)
 	{
@@ -90,6 +92,8 @@ void Kinteki::Finalize()
 	{
 		DeleteGraph(kinteki[i]);
 	}
+
+	DeleteSoundMem(kinteki_SE);		//キンテキSE
 }
 
 //当たり判定通知処理
@@ -103,6 +107,9 @@ void Kinteki::OnHitCollision(GameObject* hit_object)
 
 		//スコア加算処理
 		scene->Score_count(this->score);
+
+		//SEの再生
+		PlaySoundMem(kinteki_SE, DX_PLAYTYPE_BACK, TRUE);
 
 		//敵が消えるエフェクト
 		CreateObject<EnemyEffect>(this->location)->SetImage(this->image, this->flip_flag);

@@ -3,7 +3,7 @@
 
 Stage::Stage() : stage_image(NULL)
 {
-
+	stage_image = NULL;
 }
 
 Stage::~Stage()
@@ -13,6 +13,7 @@ Stage::~Stage()
 
 void Stage::Initialize()
 {
+	//‰æ‘œ‚Æ‰¹Œ¹‚Ì“Ç‚İ‚İ
 	stage_image = LoadGraph("Resource/Images/Stage/Stage.png");
 }
 
@@ -23,14 +24,7 @@ void Stage::Update()
 
 void Stage::Finalize()
 {
-	if (stage_image != NULL)
-	{
-		return;
-	}
-	else 
-	{
-		DeleteGraph(stage_image);
-	}
+	DeleteGraph(stage_image);
 }
 
 void Stage::Draw() const

@@ -13,6 +13,8 @@ EnemyEffect::~EnemyEffect()
 
 void EnemyEffect::Initialize()
 {
+	type = EFFECT;		//オブジェクトタイプの設定
+
 	Check_active = TRUE;				//表示するかしないか
 
 	toumeido = 255;
@@ -44,11 +46,6 @@ void EnemyEffect::SetImage(int img,int filp_flag)
 	this->image = img;
 
 	this->filp_flag = filp_flag;
-
-	if (image == -1)
-	{
-		throw("ハコテキ画像がありません\n");
-	}
 }
 
 void EnemyEffect::MoveEffect()

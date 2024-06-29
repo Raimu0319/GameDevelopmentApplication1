@@ -27,6 +27,8 @@ void Hakoteki::Initialize()
 	//画像の読み込み
 	hakoteki[0] = LoadGraph("Resource/Images/Enemy/hakoteki1.png");
 	hakoteki[1] = LoadGraph("Resource/Images/Enemy/hakoteki2.png");
+
+	hakoteki_SE = LoadSoundMem("Resource/sounds/Boss_gahee.wav");				//ハコテキ撃破SE
 	
 	//エラーチェック
 	for (i = 0; i < 2; i++)
@@ -90,6 +92,7 @@ void Hakoteki::Finalize()
 		DeleteGraph(hakoteki[i]);
 	}
 
+	DeleteSoundMem(hakoteki_SE);
 }
 
 //当たり判定通知処理
@@ -98,11 +101,15 @@ void Hakoteki::OnHitCollision(GameObject* hit_object)
 	//爆弾と触れた場合
 	if (hit_object->get_type() == BOMB)
 	{
+	
 		//当たった時に行う処理
 		direction = 0.0f;
 
 		//スコア加算処理
 		scene->Score_count(this->score);
+
+		//ハコテキSE
+		PlaySoundMem(hakoteki_SE, DX_PLAYTYPE_BACK,TRUE);
 
 		//敵が消えるエフェクト
 		CreateObject<EnemyEffect>(this->location)->SetImage(this->image, this->flip_flag);

@@ -8,6 +8,9 @@ private:
 	int haneteki[2];
 	int happy[2];
 
+	int haneteki_SE;				//ハネテキ撃破SE
+	int hapy_SE;					//ハーピィ撃破SE
+
 public:
 	Haneteki();
 	virtual ~Haneteki();

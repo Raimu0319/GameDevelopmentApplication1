@@ -6,7 +6,8 @@ class Hakoteki : public Enemy
 {
 private:
 	//敵画像
-	int hakoteki[2];
+	int hakoteki[2];		//ハコテキ画像
+	int hakoteki_SE;				//ハコテキ撃破SE
 	int wait_count;			//弾の発射時間
 	int animation_count;		//アニメーション時間
 	Vector2D direction;		//進行方向

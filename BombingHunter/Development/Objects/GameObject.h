@@ -60,4 +60,5 @@ public:
 
 	//“–‚½‚è”»’è‚Ì‹æ•Ê
 	int get_type() const;
+
 };

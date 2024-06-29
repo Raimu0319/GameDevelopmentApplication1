@@ -25,6 +25,8 @@ void Player::Initialize()
 	animation[0] = LoadGraph("Resource/Images/Player/飛ぶ1.png");
 	animation[1] = LoadGraph("Resource/Images/Player/飛ぶ2.png");
 
+	bomb_SE = LoadSoundMem("Resource/sounds/pan.wav");		//爆弾生成サウンド
+
 	//エラーチェック
 	if (animation[0] == -1 || animation[1] == -1)
 	{
@@ -65,8 +67,9 @@ void Player::Update()
 	if (InputControl::GetKeyDown(KEY_INPUT_SPACE))
 	{
 		if (bomb_stop == 0)
-		{
-			CreateObject<Bomb>(Vector2D(this->location.x,this->location.y))->SetDirection(this->velocity);
+		{	
+			PlaySoundMem(bomb_SE, DX_PLAYTYPE_BACK,TRUE);		//SEの再生
+			CreateObject<Bomb>(Vector2D(this->location.x, this->location.y))->SetDirection(this->velocity);
 		}
 	}
 }
@@ -93,9 +96,10 @@ void Player::Draw() const
 //終了時処理
 void Player::Finalize()
 {
-	//使用した画像を解放する
+	//使用した画像とSEを解放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
+	DeleteSoundMem(bomb_SE);
 }
 
 //当たり判定通知処理

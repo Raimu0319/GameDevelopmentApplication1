@@ -32,6 +32,8 @@ void E_ScoreEffect::Initialize()
 		}
 	}*/
 
+	type = EFFECT;		//オブジェクトタイプの設定
+
 	Check_active = TRUE;		//表示するかしないか
 
 	toumeido = 255;				//透明度の設定（0が完全透明：255が不完全透明）
