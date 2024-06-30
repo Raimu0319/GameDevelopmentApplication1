@@ -7,10 +7,13 @@
 GameObject::GameObject() :
 	location(0.0f),
 	box_size(0.0f),
+	Check_active(NULL),
+	bomb_stop(0),
 	radian(0.0),
 	type(NULL),
 	image(NULL),
-	sound(NULL)
+	sound(NULL),
+	scene(nullptr)
 {
 
 }
@@ -36,18 +39,6 @@ void GameObject::Update()
 //ï`âÊèàóù
 void GameObject::Draw() const
 {
-	//ìñÇΩÇËîªíËÇÃâ¬éãâª
-#ifdef D_PIVOT_CENTER
-	Vector2D tl = location - (box_size / 2.0f);
-	Vector2D br = location + (box_size / 2.0f);
-
-	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
-#else
-	Vector2D tl = location;
-	Vector2D br = location + box_size;
-
-	DrawBoxAA(tl.x, tl.y, br.x, br.y, GetColor(255, 0, 0), FALSE);
-#endif // D_VPIVOT_CENTER
 
 }
 

@@ -5,8 +5,8 @@
 class Haneteki : public Enemy
 {
 private:
-	int haneteki[2];
-	int happy[2];
+	int haneteki[2];				//ハネテキ画像
+	int happy[2];					//ハーピィ画像
 
 	int haneteki_SE;				//ハネテキ撃破SE
 	int hapy_SE;					//ハーピィ撃破SE

@@ -6,7 +6,7 @@
 #include "DxLib.h"
 
 //コンストラクタ
-Kinteki::Kinteki()
+Kinteki::Kinteki() : animation_count(0),kinteki_SE(NULL)
 {
 	kinteki[0] = NULL;
 	kinteki[1] = NULL;

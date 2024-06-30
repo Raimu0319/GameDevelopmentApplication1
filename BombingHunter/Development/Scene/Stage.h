@@ -5,8 +5,8 @@
 class Stage 
 {
 private:
-	int stage_image;
-	int stage_sound;
+	int stage_image;			//”wŒi‰æ‘œ
+	int stage_sound;			//ƒƒCƒ“BGM
 
 public:
 	Stage();

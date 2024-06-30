@@ -54,9 +54,6 @@ void BombEffect::Initialize()
 //更新処理
 void BombEffect::Update()
 {
-	////移動処理
-	//Movement();
-	//アニメーション制御
 	AnimetionControl();
 }
 

@@ -6,7 +6,7 @@
 #include "DxLib.h"
 
 //コンストラクタ
-Enemy::Enemy() : animation_count(0), direction(0.0f)
+Enemy::Enemy() : animation_count(0), direction(0.0f),flip_flag(NULL),score(0)
 {
 	
 }
@@ -56,7 +56,7 @@ void Enemy::Draw() const
 {
 
 	//情報を基に敵画像を描画する
-	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, flip_flag);
+	DrawRotaGraphF(location.x, location.y, 0.7, radian, image, TRUE, flip_flag);
 
 	//親クラスの描画処理を呼び出す
 	__super::Draw();

@@ -6,9 +6,8 @@ class Bullet : public CreateClass
 {
 private:
 	//敵画像
-	int bullet[2];				//テキ弾画像
+	int bullet;				//テキ弾画像
 	int hit_SE;					//テキ弾ヒットサウンド
-	int animation_count;		//アニメーション時間
 	Vector2D target;			//弾の発射地点
 	Vector2D direction;			//進行方向
 
@@ -36,6 +35,4 @@ public:
 private:
 	//移動処理
 	void Movement();
-	//アニメーション制御
-	void AnimetionControl();
 };

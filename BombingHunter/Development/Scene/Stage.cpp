@@ -1,7 +1,7 @@
 #include "Stage.h"
 #include "DxLib.h"
 
-Stage::Stage() : stage_image(NULL)
+Stage::Stage() : stage_image(NULL),stage_sound(NULL)
 {
 	stage_image = NULL;
 }
@@ -11,22 +11,26 @@ Stage::~Stage()
 
 }
 
+//‰Šú‰»ˆ—
 void Stage::Initialize()
 {
-	//‰æ‘œ‚Æ‰¹Œ¹‚Ì“Ç‚İ‚İ
+	//‰æ‘œ‚Ì“Ç‚İ‚İ
 	stage_image = LoadGraph("Resource/Images/Stage/Stage.png");
 }
 
+//XVˆ—
 void Stage::Update()
 {
 	
 }
 
+//I—¹ˆ—
 void Stage::Finalize()
 {
 	DeleteGraph(stage_image);
 }
 
+//•`‰æˆ—
 void Stage::Draw() const
 {
 #ifdef D_PIVOT_CENTER

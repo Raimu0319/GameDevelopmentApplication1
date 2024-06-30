@@ -5,9 +5,9 @@
 #include "DxLib.h"
 
 //コンストラクタ
-Bullet::Bullet()
+Bullet::Bullet() : hit_SE(NULL)
 {
-	bullet[0] = NULL;
+	bullet = NULL;
 }
 
 //デストラクタ
@@ -20,13 +20,13 @@ Bullet::~Bullet()
 void Bullet::Initialize()
 {
 	//画像の読み込み
-	bullet[0] = LoadGraph("Resource/Images/Enemy/tekitama1.png");
+	bullet = LoadGraph("Resource/Images/Enemy/tekitama1.png");
 
 	//SEの読み込み
 	hit_SE = LoadSoundMem("Resource/sounds/bishi.wav");		//テキ弾ヒットサウンド
 
 	//エラーチェック
-	if (bullet[0] == -1)
+	if (bullet == -1)
 	{
 		throw("テキ弾の画像がありません\n");
 	}
@@ -44,7 +44,7 @@ void Bullet::Initialize()
 	Check_active = TRUE;
 
 	//初期画像の設定
-	image = bullet[0];
+	image = bullet;
 }
 
 //更新処理
@@ -52,9 +52,6 @@ void Bullet::Update()
 {
 	//移動処理
 	Movement();
-
-	//アニメーション制御
-	AnimetionControl();
 }
 
 //描画処理
@@ -71,7 +68,7 @@ void Bullet::Draw() const
 void Bullet::Finalize()
 {
 	//画像とSEの削除
-	DeleteGraph(bullet[0]);
+	DeleteGraph(bullet);
 	DeleteSoundMem(hit_SE);
 }
 
@@ -137,21 +134,4 @@ void Bullet::Movement()
 
 	//進行方向に向かって、位置座標を変更する
 	location += direction;
-}
-
-//敵アニメーション制御
-void Bullet::AnimetionControl()
-{
-	//フレームカウントを加算する
-	animation_count++;
-
-	//30フレーム目に到達したら
-	if (animation_count >= 30)
-	{
-
-		image = bullet[0];
-		//countのリセット
-		animation_count = 0;
-
-	}
 }

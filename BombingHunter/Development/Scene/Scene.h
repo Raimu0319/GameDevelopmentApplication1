@@ -38,10 +38,9 @@ private:
 	int high_score;					//ハイスコア
 	int number[10];						//０～９までの数字画像
 
-	int time_count;			//秒数カウント
 	int timer_img;			//タイマー画像
 	int startTime;			//プログラムが開始された時間
-	int baisu;
+	int time_add;			//秒数カウント
 	
 	int time_sec1;			//秒数画像表示
 	int time_sec2;			//秒数画像表示
@@ -51,8 +50,6 @@ private:
 
 	int finish_img;					//ゲーム終了画像
 	int result_img[4];					//最終結果画像
-
-	int wait_time;					//一定時間ストップ
 
 	int Finalize_count;				//終了時処理を一度だけ実行
 	int se_count;				//リザルトが一度実行されたか	

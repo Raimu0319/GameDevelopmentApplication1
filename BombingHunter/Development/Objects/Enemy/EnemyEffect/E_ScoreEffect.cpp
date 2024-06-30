@@ -1,7 +1,7 @@
 #include "E_ScoreEffect.h"
 #include "DxLib.h"
 
-E_ScoreEffect::E_ScoreEffect() : animation_count(0), filp_flag(0)
+E_ScoreEffect::E_ScoreEffect() : animation_count(0), filp_flag(0),image(NULL),toumeido(255)
 {
 	e_score_img[0] = NULL;
 	e_score_img[1] = NULL;
@@ -40,7 +40,7 @@ void E_ScoreEffect::Initialize()
 
 	image = NULL;				//‰æ‘œ‚Ìİ’è
 
-	Direction.x = 1.0f;
+	Direction.x = 1.0f;			//ˆÚ“®—Ê‚Ìİ’è
 	Direction.y = -1.0f;
 
 	start_location = location;	//‰ŠúÀ•W

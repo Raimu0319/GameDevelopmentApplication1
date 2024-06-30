@@ -21,7 +21,6 @@ protected:
 	int sound;						//再生する音源
 	int type;						// オブジェクトタイプ
 	class Scene* scene;				//sceneのポインタ
-	//class Player* player;			//playerのポインタ
 	int Check_active;				//表示するかしないか
 
 public:

@@ -9,7 +9,12 @@
 #include "Dxlib.h"
 
 //コンストラクタ
-Scene::Scene() : objects(),sum_score(0),high_score(0),Finalize_count(0)
+Scene::Scene() : 
+	objects(),sum_score(0),
+	high_score(0),Finalize_count(0),se_count(0),
+	frame_count(0),score(0),startTime(0),
+	time_add(0),time_sec1(0),time_sec2(0),
+	time_set(60),finish_se(NULL),player(nullptr)
 {
 	int i;
 
@@ -119,7 +124,7 @@ void Scene::Initialize()
 	
 	time_sec2 = time_set % 10;		//1の位
 
-	baisu = 1;					//秒数カウント
+	time_add = 1;					//秒数カウント
 
 	Finalize_count = 0;				//一度だけ実行
 
@@ -200,12 +205,6 @@ void Scene::Update()
 			}
 
 			frame_count = 0;
-		}
-
-		//スペースキーを押したら、爆弾を生成する
-		if (InputControl::GetKeyDown(KEY_INPUT_Z))
-		{
-			CreateObject<Hakoteki>(Vector2D(0.0f, LANE_1))->GetPlayerpoint(player);
 		}
 	}
 	
@@ -306,11 +305,11 @@ void Scene::Time_Anim()
 	int now_count = GetNowCount() - startTime;
 
 	//1000ms=1sec
-	if (now_count >= 1000 * baisu)
+	if (now_count >= 1000 * time_add)
 	{
-		time_set--;
+		time_set--;			//制限時間を減らす
 
-		baisu++;
+		time_add++;			//プログラム開始から一秒経過させる
 	}
 
 	time_sec1 = time_set / 10;			//10の位
@@ -349,6 +348,7 @@ void Scene::Finalize()
 	DeleteGraph(img_high_score);
 	DeleteGraph(timer_img);
 
+	//サウンドの解放
 	DeleteSoundMem(stage_sound);
 }
 

@@ -5,7 +5,7 @@
 #include "DxLib.h"
 
 //コンストラクタ
-Haneteki::Haneteki()
+Haneteki::Haneteki() : haneteki_SE(NULL),hapy_SE(NULL)
 {
 	haneteki[0] = NULL;
 	haneteki[1] = NULL;
@@ -25,11 +25,12 @@ void Haneteki::Initialize()
 {
 	int i;
 
-	//画像の読み込み
+	//ハネテキ画像の読み込み
 	haneteki[0] = LoadGraph("Resource/Images/Enemy/haneteki1.png");
 	haneteki[1] = LoadGraph("Resource/Images/Enemy/haneteki2.png");
 	haneteki_SE = LoadSoundMem("Resource/sounds/teki_gahee.wav");		//ハネテキ撃破SE
 
+	//ハーピィ画像の読み込み
 	happy[0] = LoadGraph("Resource/Images/Enemy/happy1.png");
 	happy[1] = LoadGraph("Resource/Images/Enemy/happy2.png");
 	hapy_SE = LoadSoundMem("Resource/sounds/pokan.wav");			//ハーピィ撃破SE
@@ -110,6 +111,7 @@ void Haneteki::Finalize()
 		DeleteGraph(happy[i]);
 	}
 
+	//使用したSEの解放
 	DeleteSoundMem(haneteki_SE);
 	DeleteSoundMem(hapy_SE);
 }
@@ -140,23 +142,22 @@ void Haneteki::OnHitCollision(GameObject* hit_object)
 	}
 }
 
-
+//ハネテキを生成するかハーピィを生成するか
 void Haneteki::RandomSpwan()
 {
-	int i;
-	i = GetRand(5);
+	int r;
+	r = GetRand(4);
 
-	switch (i)
+	switch (r)
 	{
 	case 0:
 	case 1:
 	case 2:
-	case 3:
 		image = haneteki[0];
 		break;
 
 	case 4:
-	case 5:
+	case 3:
 		image = happy[0];
 		break;
 	}

@@ -6,7 +6,7 @@
 #include "Bomb/Bomb.h"
 
 //コンストラクタ
-Player::Player() : animation_count(0), filp_flag(FALSE)
+Player::Player() : animation_count(0), filp_flag(FALSE),bomb_SE(NULL)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -78,19 +78,7 @@ void Player::Update()
 void Player::Draw() const
 {
 	//プレイヤー画像の描画
-	DrawRotaGraphF(location.x, location.y, 1.0, radian, image, TRUE, filp_flag);
-
-	//デバック用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (box_size / 2.0f);
-	Vector2D box_collision_lower_right = location + (box_size / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-
-#endif
+	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, filp_flag);
 }
 
 //終了時処理

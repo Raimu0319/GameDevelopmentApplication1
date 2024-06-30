@@ -1,7 +1,7 @@
 #include "EnemyEffect.h"
 #include "DxLib.h"
 
-EnemyEffect::EnemyEffect() : animation_count(0), filp_flag(0),shake(0)
+EnemyEffect::EnemyEffect() : animation_count(0), filp_flag(0),shake(0),image(NULL),toumeido(255)
 {
 
 }
@@ -11,23 +11,26 @@ EnemyEffect::~EnemyEffect()
 
 }
 
+//初期処理
 void EnemyEffect::Initialize()
 {
 	type = EFFECT;		//オブジェクトタイプの設定
 
 	Check_active = TRUE;				//表示するかしないか
 
-	toumeido = 255;
+	toumeido = 255;				//画像の透明度
 
 	image = NULL;
 }
 
+//更新処理
 void EnemyEffect::Update()
 {
 	MoveEffect();
 	EraseAnim();
 }
 
+//描画処理
 void EnemyEffect::Draw() const
 {
 	//敵が消えるエフェクトの描画
@@ -36,11 +39,13 @@ void EnemyEffect::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+//終了時処理
 void EnemyEffect::Finalize()
 {
 	image = NULL;
 }
 
+//画像の設定
 void EnemyEffect::SetImage(int img,int filp_flag)
 {
 	this->image = img;
@@ -48,6 +53,7 @@ void EnemyEffect::SetImage(int img,int filp_flag)
 	this->filp_flag = filp_flag;
 }
 
+//移動処理
 void EnemyEffect::MoveEffect()
 {
 	if (shake == 0)
@@ -66,6 +72,7 @@ void EnemyEffect::MoveEffect()
 	location.y += 0.5f;
 }
 
+//どんどん透明にしていく処理
 void EnemyEffect::EraseAnim()
 {
 	//フレームカウントを加算する

@@ -6,7 +6,7 @@
 #include <math.h>
 
 //コンストラクタ
-Bomb::Bomb() : animation_count(0), filp_flag(FALSE)
+Bomb::Bomb() : animation_count(0), filp_flag(FALSE), explosion_SE(NULL),player(nullptr)
 {
 	bomb_img = NULL;
 }
@@ -62,18 +62,6 @@ void Bomb::Draw() const
 {
 	//プレイヤー画像の描画
 	DrawRotaGraphF(location.x, location.y, 0.8, radian, image, TRUE, filp_flag);
-
-	//デバック用
-#if _DEBUG
-	//当たり判定の可視化
-	Vector2D box_collision_upper_left = location - (box_size / 2.0f);
-	Vector2D box_collision_lower_right = location + (box_size / 2.0f);
-
-	DrawBoxAA(box_collision_upper_left.x, box_collision_upper_left.y,
-		box_collision_lower_right.x, box_collision_lower_right.y,
-		GetColor(255, 0, 0), FALSE);
-
-#endif
 }
 
 //終了時処理
@@ -92,6 +80,7 @@ void Bomb::GetPlayerpoint(Player* player)
 //当たり判定通知処理
 void Bomb::OnHitCollision(GameObject* hit_object)
 {
+	//当たったオブジェクトが敵だった場合
 	if (hit_object->get_type() == ENEMY)
 	{
 		location.y += direction.y;
@@ -180,6 +169,7 @@ void Bomb::Movement()
 		direction.y += direction_add.y;
 	}
 	
+	//爆弾の向きを変える処理
 	if (radian != DX_PI / 2.0)
 	{
 		if (DX_PI / 2.0 < radian)

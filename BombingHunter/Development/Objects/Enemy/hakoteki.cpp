@@ -7,7 +7,9 @@
 #include "DxLib.h"
 
 //コンストラクタ
-Hakoteki::Hakoteki()
+Hakoteki::Hakoteki() :
+	animation_count(0),wait_count(0),
+	hakoteki_SE(NULL),player(nullptr)
 {
 	hakoteki[0] = NULL;
 	hakoteki[1] = NULL;
@@ -46,7 +48,7 @@ void Hakoteki::Initialize()
 	radian = 0.0f;
 
 	//大きさの設定
-	box_size = 40.0f;
+	box_size = 45.0f;
 
 	//オブジェクトタイプの設定
 	type = ENEMY;

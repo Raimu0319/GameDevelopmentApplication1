@@ -1,7 +1,7 @@
 #include "B_Effect.h"
 #include "DxLib.h"
 
-B_Effect::B_Effect() : animation_count(0), filp_flag(0)
+B_Effect::B_Effect() : animation_count(0), filp_flag(0),image(NULL),toumeido(255)
 {
 		b_eff_img[0] = NULL;
 		b_eff_img[1] = NULL;
