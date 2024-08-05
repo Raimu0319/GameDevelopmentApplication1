@@ -135,6 +135,10 @@
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="Objects\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Objects\Enemy\Ghost\Blinky.cpp" />
+    <ClCompile Include="Objects\Enemy\Ghost\Clyde.cpp" />
+    <ClCompile Include="Objects\Enemy\Ghost\Inky.cpp" />
+    <ClCompile Include="Objects\Enemy\Ghost\Pinky.cpp" />
     <ClCompile Include="Objects\Food\Food.cpp" />
     <ClCompile Include="Objects\Food\PowerFood.cpp" />
     <ClCompile Include="Objects\GameObjectBase.cpp" />
@@ -152,6 +156,10 @@
     <ClCompile Include="Utility\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\Enemy\Ghost\Blinky.h" />
+    <ClInclude Include="Objects\Enemy\Ghost\Clyde.h" />
+    <ClInclude Include="Objects\Enemy\Ghost\Inky.h" />
+    <ClInclude Include="Objects\Enemy\Ghost\Pinky.h" />
     <ClInclude Include="Objects\Food\PowerFood.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Objects\Enemy\EnemyBase.h" />

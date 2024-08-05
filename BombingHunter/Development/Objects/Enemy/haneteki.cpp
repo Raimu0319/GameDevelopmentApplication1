@@ -92,12 +92,12 @@ void Haneteki::Update()
 	AnimetionControl();
 }
 
-//描画処理
-void Haneteki::Draw() const
-{
-	//親クラスの描画処理を呼び出す
-	__super::Draw();
-}
+////描画処理
+//void Haneteki::Draw() const
+//{
+//	//親クラスの描画処理を呼び出す
+//	__super::Draw();
+//}
 
 //終了時処理
 void Haneteki::Finalize()

@@ -406,6 +406,7 @@ void Player::AnimationControl(float delta_second)
 		int dir_num = (int)now_direction_state;
 		if (0 <= dir_num && dir_num < 4)
 		{
+			//dir_num * 3で0、3、6、9番目の画像を取得してその部分を先頭画像としてその部分から0, 1，2番目を取得している，
 			image = move_animation[(dir_num * 3) + animation_num[animation_count]];
 		}
 
