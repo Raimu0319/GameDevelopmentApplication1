@@ -2,6 +2,7 @@
 
 #include "../GameObject.h"
 
+//現在モード
 enum eNowMode
 {
 	START,
@@ -11,7 +12,8 @@ enum eNowMode
 	DEAD
 };
 
-enum eDirectionState
+//移動方向
+enum eDirectionState : unsigned char
 {
 	E_UP = 0,
 	E_RIGHT,
@@ -19,8 +21,17 @@ enum eDirectionState
 	E_LEFT
 };
 
-class EnemyBase : public GameObject
+//エネミーのタイプ
+enum eEnemyType
 {
+	BLINKY = 0,
+	PINKY,
+	CLYDE,
+	INKY,
+};
+
+class EnemyBase : public GameObject
+{	
 protected:
 	class Player* player;				//プレイヤーのポインタ
 	eNowMode now_mode;					//現在の状態
@@ -28,14 +39,32 @@ protected:
 	std::vector<int>eye_animation;		//目の画像
 	int eye_image;						//目の画像
 	eDirectionState direction;			//進行方向
+	eDirectionState old_direction;			//前回進行方向
+	eEnemyType enemy_type;				//敵の種類
 	Vector2D e_velocity;				//移動速度
+	Vector2D old_location;					// 前回のlocation
 	Vector2D territory;					//縄張り座標
+	Vector2D loc_diff;					//目標地点との差
+
 	Vector2D const start_point;			//初期地点の座標
 	float time_count;					//時間計測
 	float animation_time;				//アニメーション時間
 	int animation_count;				//アニメーション添字
 	int enemycreate_court;				//敵の生成数
-	int animation_num[2] = { };	// 移動アニメーションの順番
+	int animation_num[2] = { };		// 移動アニメーションの順番
+	float now_time;					//現在時間取得
+	float izke_time;					//イジケ時間
+
+	bool search_end;					//探索が終了したかどうか
+
+	//現在パネルからどれほど動いたか
+	float move_cost;						//現在位置からどれほど動くか
+	float sum_cost;							//合計移動値
+
+	int top;
+	int down;
+	int right;
+	int left;
 
 private:
 	int flash_count;					//点滅回数カウント
@@ -51,8 +80,6 @@ public:
 
 	void GetPlayerpointer(Player* player);			//プレイヤーのポインタ取得処理
 
-	void EnemyCreate(int enemycreate_court);				//敵の生成処理
-
 	/// <summary>
 	/// 当たり判定通知処理
 	/// </summary>
@@ -63,16 +90,15 @@ protected:
 	virtual void PlayerChase(float delta_second);		//プレイヤーを追跡する処理
 
 	virtual void  AnimationControl(float delta_second);		//アニメーション制御
+
+	void RootSearch();			//最短距離探索関数
+
 private:
-	void ModeChange();				//敵の状態切り替え
+	void ModeChange(float delta_second);				//敵の状態切り替え
 	void Movement(float delta_second);			//移動処理
 	void EnemyStart(float delta_second);			//ゲーム開始時処理
 	void GoTerritory(float delta_second);		//縄張りに向かう処理
 	void EnemyRespawn(float delta_second);		//リスポーン処理
 	void EnemyEscape(float delta_second);		//いじけ状態処理
-	void EnemyGate();				//トンネルの減速処理
-
-	
-
-	
+	void EnemyGate();				//トンネルの減速処理	
 };

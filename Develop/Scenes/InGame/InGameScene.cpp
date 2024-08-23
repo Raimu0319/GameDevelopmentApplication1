@@ -1,6 +1,10 @@
 ﻿#include "InGameScene.h"
 #include "../../Objects/Player/Player.h"
 #include "../../Objects/Enemy/EnemyBase.h"
+#include "../../Objects/Enemy/Ghost/Blinky.h"
+#include "../../Objects/Enemy/Ghost/Pinky.h"
+#include "../../Objects/Enemy/Ghost/Clyde.h"
+#include "../../Objects/Enemy/Ghost/Inky.h"
 #include "../../Objects/Wall/Wall.h"
 #include "../../Objects/Food/Food.h"
 #include "../../Objects/Food/PowerFood.h"
@@ -14,6 +18,7 @@ InGameScene::InGameScene()
 	, enemy(nullptr)
 	, back_ground_image(NULL)
 	, back_ground_sound(NULL)
+	, e_count(0)
 	, pause_flag(false)
 {
 
@@ -190,8 +195,31 @@ void InGameScene::LoadStageMapCSV()
 				generate_location = (Vector2D((float)(spos_x - 1), (float)(spos_y - 1)) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 				enemy = CreateObject<EnemyBase>(generate_location);
 				enemy->GetPlayerpointer(player);
-				enemy->EnemyCreate(0);
+				switch (e_count)
+				{
+					case 0:
+						CreateObject<Blinky>(generate_location)->GetPlayerpointer(this->player);
+						break;
+
+					case 1:
+						CreateObject<Pinky>(generate_location)->GetPlayerpointer(this->player);
+						break;
+						
+					case 2:
+						CreateObject<Clyde>(generate_location)->GetPlayerpointer(this->player);
+						break;
+
+					case 3:
+						CreateObject<Inky>(generate_location)->GetPlayerpointer(this->player);
+						break;
+
+				default:
+					break;
+				}
+				
+				this->e_count++;
 				break;
+
 			// 上記以外
 			default:
 				break;

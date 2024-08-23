@@ -25,20 +25,29 @@ void Blinky::Initialize()
 	collision.object_type = eObjectType::enemy;
 	collision.hit_object_type.push_back(eObjectType::player);
 	collision.hit_object_type.push_back(eObjectType::wall);
-	collision.hit_object_type.push_back(eObjectType::special);
 	collision.radius = (D_OBJECT_SIZE - 1.0f) / 2.0f;
 
 	// レイヤーの設定
 	z_layer = 5;
 
+	//エネミータイプ設定
+	enemy_type = BLINKY;
+
+	now_mode = TERRITORY;
+
+	//縄張り設定
+	//territory = (10, 50);
+
+	//初期画像の設定
+	image = move_animation[0];
+
 	// 可動性の設定
 	mobility = eMobilityType::Movable;
 }
 
-//void Blinky::PlayerChase(float delta_second)
-//{
-//
-//}
+void Blinky::PlayerChase(float delta_second)
+{
+}
 
 void Blinky::AnimationControl(float delta_second)
 {
@@ -46,24 +55,47 @@ void Blinky::AnimationControl(float delta_second)
 	animation_time += delta_second;
 	if (animation_time >= (1.0f / 16.0f))
 	{
-		animation_time = 0.0f;
-		animation_count++;
-
-		if (animation_count >= 4)
+		if (now_mode != IZIKE)
 		{
-			image = move_animation[1];
 
-			animation_count = 0;
+			animation_time = 0.0f;
+			animation_count++;
+
+			if (animation_count >= 6)
+			{
+				if (image == move_animation[0])
+				{
+					image = move_animation[1];
+				}
+				else
+				{
+					image = move_animation[0];
+				}
+				animation_count = 0;
+			}
+
+			// 画像の設定
+			int dir_num = (int)direction;
+			if (0 <= dir_num && dir_num < 4)
+			{
+				eye_image = eye_animation[dir_num];
+			}
 		}
-
-		image = move_animation[0];
-
-		// 画像の設定
-		int dir_num = (int)direction;
-		if (0 <= dir_num && dir_num < 4)
+		else if (now_mode == IZIKE)
 		{
-			eye_image = eye_animation[dir_num];
-		}
+			animation_time = 0.0f;
+			animation_count++;
 
+			if (animation_count >= 4)
+			{
+				image = move_animation[17];
+
+				animation_count = 0;
+			}
+
+			image = move_animation[16];
+
+		}
+		
 	}
 }
