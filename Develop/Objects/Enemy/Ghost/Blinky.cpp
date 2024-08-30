@@ -36,7 +36,7 @@ void Blinky::Initialize()
 	now_mode = TERRITORY;
 
 	//“ê’£‚èİ’è
-	//territory = (10, 50);
+	territory = (0.0f,-300.0f);
 
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = move_animation[0];

@@ -13,15 +13,18 @@
 #include "../Player/Player.h"
 #include "DxLib.h"
 
+
+
 #define D_ENEMY_SPEED	(55.0f)
 
 EnemyBase::EnemyBase() :
 	player(nullptr), now_mode(START)
 	,move_animation(NULL), eye_animation(NULL)
 	,direction(E_RIGHT),e_velocity(0.0f)
-	,territory(0.0f), start_point()
+	,territory(0.0f,0.0f), start_point()
 	,enemycreate_court(0),eye_image(NULL)
 	,izke_time(0.0f),search_end(false)
+	,old_loc(NULL)
 {
 }
 
@@ -44,6 +47,8 @@ void EnemyBase::Initialize()
 
 	// 可動性の設定
 	mobility = eMobilityType::Movable;
+
+	//territory = (-200, -200);
 
 }
 
@@ -74,6 +79,10 @@ void EnemyBase::Draw(const Vector2D& screen_offset) const
 		Vector2D graph_location = this->location + screen_offset;
 		DrawRotaGraphF(graph_location.x, graph_location.y, 1.0, 0.0, eye_image, TRUE);
 	}
+
+	// オフセット値を基にエネミーの目画像の描画を行う
+	Vector2D graph_location = this->territory + screen_offset;
+	DrawBoxAA(graph_location.x, graph_location.y,D_OBJECT_SIZE,D_OBJECT_SIZE, GetColor(255,0,0), TRUE);
 
 }
 
@@ -216,16 +225,20 @@ void EnemyBase::Movement(float delta_second)
 	switch (direction)
 	{
 	case eDirectionState::E_UP:
-		e_velocity.y = -3.0f;
+		e_velocity.y = -2.0f;
+		e_velocity.x = 0.0f;
 		break;
 	case eDirectionState::E_DOWN:
-		e_velocity.y = 3.0f;
+		e_velocity.y = 2.0f;
+		e_velocity.x = 0.0f;
 		break;
 	case eDirectionState::E_LEFT:
-		e_velocity.x = -3.0f;
+		e_velocity.x = -2.0f;
+		e_velocity.y = 0.0f;
 		break;
 	case eDirectionState::E_RIGHT:
-		e_velocity.x = 3.0f;
+		e_velocity.x = 2.0f;
+		e_velocity.y = 0.0f;
 		break;
 	default:
 		break;
@@ -244,16 +257,30 @@ void EnemyBase::EnemyStart(float delta_second)
 //縄張りに向かう処理
 void EnemyBase::GoTerritory(float delta_second)
 {
-	switch (enemy_type)
-	{
-	case BLINKY:
-	{
-		// 現在パネルの状態を確認
-		ePanelID panel = StageData::GetPanelData(location);
+	//現在位置をint型に変換して保存
+	int loc_x = (int)location.x;
+	int loc_y = (int)location.y;
 
-		//現在パネルがブランチなら
-		if (panel == BRANCH)
+	//現在位置を添え字に変換
+	StageData::ConvertToIndex(location, ey, ex);
+
+	//現在パネルの中心座標を取得
+	ex = (int)(ex + 1) * D_OBJECT_SIZE - D_OBJECT_SIZE / 2;
+	ey = (int)(ey + 1) * D_OBJECT_SIZE - D_OBJECT_SIZE / 2;
+
+	//中心座標の合計値
+	int e_sum = ex + ey;
+	
+	//現在タイルの情報を取得
+	ePanelID panel = StageData::GetPanelData(location);
+
+		//現在パネルがブランチかつ前回座標と同じではなければ
+		if (loc_x == ex && loc_y == ey && panel == BRANCH
+			&& (e_sum != old_loc))
 		{
+			//現在位置を添え字に変換
+			StageData::ConvertToIndex(territory, ty, tx);
+
 			//上下左右のパネル情報
 			std::map<eAdjacentDirection, ePanelID> panel = {
 				{ eAdjacentDirection::UP, ePanelID::NONE },
@@ -262,133 +289,206 @@ void EnemyBase::GoTerritory(float delta_second)
 				{ eAdjacentDirection::RIGHT, ePanelID::NONE }
 			};
 
-			//ルート保存
-			std::vector<std::vector<float>> root;
+			//float reserve_root[5] = { 9999, 9999, 9999, 9999, 9999 };				//評価が同じだった場合片方を保存しておく配列
 
-			//上下左右のパネル情報の取得
-			panel = StageData::GetAdjacentPanelData(location);
+			int top = 9999;
+			int down = 9999;
+			int right = 9999;
+			int left = 9999;
 
-			//計算式を書く　F = H + G (H::プレイヤーとエネミーの距離 G::現在位置から何回動くか)
-			loc_diff = territory - location;
+			//現在位置と縄張りの差
+			int loc_dif = (ex - tx) + (ey - ty);
 
+			//評価保存
+			//std::vector<float> valuation = {};
+
+			//座標保存
+			//std::vector<float> root_x = {};
+			//std::vector<float> root_y = {};
+
+			//現在座標からどれほど動いたか
+			int x;
+			int y;
+
+			move_cost = 0;
 			//探索が終了しているかどうか
-			while (search_end == false)
-			{
+			/*while (search_end == false)
+			{*/
+
+				//上下左右のパネル情報の取得
+				panel = StageData::GetAdjacentPanelData(location);
+
 				//移動コスト
-				move_cost += 1.0f;
+				move_cost++;
 
 				//パネルが壁以外なら
-				if (panel[eAdjacentDirection::UP] != WALL)
+				if (panel[eAdjacentDirection::UP] != WALL && direction != E_DOWN)
 				{
 					//移動コストがどれほどか計算
-					sum_cost = move_cost + ((territory.x - location.x) + (territory.y - location.y));
+					sum_cost = move_cost + ((tx - ex) + (ty - ey - D_OBJECT_SIZE));
 
-					root.push_back(location) ;
+					//現在座標を添え字に変換
+					//StageData::ConvertToIndex(e_loction, x, y);
+
+					//評価の保存
+					//valuation.push_back(sum_cost);
+					top = abs(sum_cost);
+
+					//座標の保存
+					//root_x.push_back(e_loction.x);
+					//root_y.push_back(e_loction.y);
 				}
-
-				if (panel[eAdjacentDirection::DOWN] != WALL)
+				else    //壁だった場合
 				{
-					
-
+					top = 9999;
 				}
 
-				if (panel[eAdjacentDirection::LEFT] != WALL)
+				if (panel[eAdjacentDirection::DOWN] != WALL && direction != E_UP)
 				{
-					
+					//移動コストがどれほどか計算
+					sum_cost = move_cost + ((tx - ex) + (ty - ey + D_OBJECT_SIZE));
 
+					//現在座標を添え字に変換
+					//StageData::ConvertToIndex(e_loction, x, y);
+
+					//評価の保存
+					//valuation.push_back(sum_cost);
+					down = abs(sum_cost);
+
+					//座標の保存
+					//root_x.push_back(e_loction.x);
+					//root_y.push_back(e_loction.y);
 				}
-
-				if (panel[eAdjacentDirection::RIGHT] != WALL)
+				else    //壁だった場合
 				{
-					
-
+					down = 9999;
 				}
 
+				if (panel[eAdjacentDirection::LEFT] != WALL && direction != E_RIGHT)
+				{
+					//移動コストがどれほどか計算
+					sum_cost = move_cost + ((tx - ex - D_OBJECT_SIZE) + (ty - ey));
+
+					//現在座標を添え字に変換
+					//StageData::ConvertToIndex(e_loction, x, y);
+
+					//評価の保存
+					//valuation.push_back(sum_cost);
+					left = abs(sum_cost);
+
+					//座標の保存
+					//oot_x.push_back(e_loction.x);
+					//root_y.push_back(e_loction.y);
+				}
+				else    //壁だった場合
+				{
+					left = 9999;
+				}
+
+				if (panel[eAdjacentDirection::RIGHT] != WALL && direction != E_LEFT)
+				{
+					//移動コストがどれほどか計算
+					sum_cost = move_cost + ((tx - ex + D_OBJECT_SIZE) + (ty - ey));
+
+					//現在座標を添え字に変換
+					//StageData::ConvertToIndex(e_loction, x, y);
+
+					//評価の保存
+					//valuation.push_back(sum_cost);
+					right = abs(sum_cost);
+
+					//座標の保存
+					//root_x.push_back(e_loction.x);
+					//root_y.push_back(e_loction.y);
+				}
+				else    //壁だった場合
+				{
+					right = 9999;
+				}
+
+				//どのルートが一番近いか（評価が一番小さい場所）：　同じならreserve_rootにどちらかを保存
+				//min_costの初期値をtopに設定
+				min_cost = top;
+				next_root = E_UP;
+
+				//最小評価より低いかどうか
+				if(min_cost > down)
+				{
+					//低ければmin_costとnext_rootに代入
+					min_cost = down;
+					next_root = E_DOWN;
+				}
+				//else if(min_cost == down[move_cost - 1])	//評価が同じかどうか
+				//{
+				//	reserve_root[0] = down[move_cost - 1];
+				//}
+
+				//最小評価より低いかどうか
+				if (min_cost > left)
+				{
+					//低ければmin_costとnext_rootに代入
+					min_cost = left;
+					next_root = E_LEFT;
+				}
+				//else if (min_cost == left[move_cost - 1])	//評価が同じかどうか
+				//{
+				//	reserve_root[0] = left[move_cost - 1];
+				//}
+
+				//最小評価より低いかどうか
+				if (min_cost > right)
+				{
+					//低ければmin_costとnext_rootに代入
+					min_cost = right;
+					next_root = E_RIGHT;
+				}
+				//else if (min_cost == right[move_cost - 1])	//評価が同じかどうか
+				//{
+				//	reserve_root[0] = right[move_cost - 1];
+				//}
+
+				//min_costより低い評価が保存されているかどうか
+			/*	for (int i = 0; i <= 5; i++)
+				{
+					if (min_cost > reserve_root[i])
+					{
+						min_cost = reserve_root[i];
+					}
+				}*/
+
+				//今いる位置から次のパネルにlocationを変更する（上なら-24.0ｆ、下なら+24.0ｆ）（D_OBJECT_SIZEを使う）
+				/*switch (next_root)
+				{
+				case E_UP:
+					e_loction.y -= D_OBJECT_SIZE;
+					break;
+				case E_RIGHT:
+					e_loction.x += D_OBJECT_SIZE;
+					break;
+				case E_DOWN:
+					e_loction.y += D_OBJECT_SIZE;
+					break;
+				case E_LEFT:
+					e_loction.x -= D_OBJECT_SIZE;
+					break;
+				default:
+					break;
+				}*/
+
+				direction = next_root;
+
+				old_loc = e_sum;
 				//現在位置が縄張りと近かったら
-				if (location.x == territory.x && location.y == territory.y)
+				/*if (((territory.x - e_loction.x) + (territory.y - e_loction.y)) <= D_OBJECT_SIZE)
 				{
 					search_end = true;
 				}
 				
-			}
+			}*/
 
-			//if (panel[eAdjacentDirection::UP] != WALL)
-			//{			
-			//	//進行方向と逆の方向に進まないようにする
-			//	if (old_direction != E_DOWN)
-			//	{
-			//		direction = E_UP;
-			//	}
-
-			//	//Fの値が一番小さい所に向かって動く
-			//}
-
-			//if (panel[eAdjacentDirection::DOWN] != WALL)
-			//{
-			//	//進行方向と逆の方向に進まないようにする
-			//	if (old_direction != E_UP)
-			//	{
-			//		direction = E_DOWN;
-			//	}
-			//	
-			//}
-
-			//if (panel[eAdjacentDirection::LEFT] != WALL)
-			//{
-			//	//進行方向と逆の方向に進まないようにする
-			//	if (old_direction != E_RIGHT)
-			//	{
-			//		direction = E_LEFT;
-			//	}
-
-			//}
-
-			//if (panel[eAdjacentDirection::RIGHT] != WALL)
-			//{
-			//	//進行方向と逆の方向に進まないようにするｄ
-			//	if (old_direction != E_LEFT)
-			//	{
-			//		direction = E_RIGHT;
-			//	}
-			//	
-			//}
-
+			
 
 		}
-		//if (panel == BRANCH)
-		//{
-
-		//}
-
-		/*if (territory.x < location.x)
-		{
-			direction = E_LEFT;
-		}
-		else
-		{
-			direction = E_RIGHT;
-		}
-
-		if (territory.y < location.y)
-		{
-			direction = E_UP;
-		}
-		else
-		{
-			direction = E_DOWN;
-		}*/
-	}
-
-		break;
-	case PINKY:
-		break;
-	case CLYDE:
-		break;
-	case INKY:
-		break;
-	default:
-		break;
-	}
 }
 
 //プレイヤーを追跡する処理

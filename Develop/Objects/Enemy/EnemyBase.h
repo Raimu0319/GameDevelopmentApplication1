@@ -58,13 +58,23 @@ protected:
 	bool search_end;					//探索が終了したかどうか
 
 	//現在パネルからどれほど動いたか
-	float move_cost;						//現在位置からどれほど動くか
-	float sum_cost;							//合計移動値
+	int move_cost;						//現在位置からどれほど動くか
+	int sum_cost;							//合計移動値
+	int min_cost;							//最小評価
 
-	int top;
-	int down;
-	int right;
-	int left;
+	//現在座標を添え字に変換
+	int ex;		
+	int ey;
+
+	//縄張り座標を添え字に変換
+	int tx;
+	int ty;
+
+	//前回添え字保存
+	int old_loc;
+	
+
+	eDirectionState next_root;		//次の進行方向
 
 private:
 	int flash_count;					//点滅回数カウント
