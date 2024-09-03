@@ -193,8 +193,15 @@ void InGameScene::LoadStageMapCSV()
 			// エネミー
 			case 'E':
 				generate_location = (Vector2D((float)(spos_x - 1), (float)(spos_y - 1)) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
-				enemy = CreateObject<EnemyBase>(generate_location);
-				enemy->GetPlayerpointer(player);
+
+				//enemyの中身が無かったらエネミーベースを作成
+				if (enemy == nullptr)
+				{
+					enemy = CreateObject<EnemyBase>(generate_location);
+					enemy->GetPlayerpointer(player);
+				}
+
+				//
 				switch (e_count)
 				{
 					case 0:

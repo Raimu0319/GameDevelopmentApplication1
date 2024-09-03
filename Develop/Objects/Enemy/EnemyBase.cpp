@@ -8,11 +8,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <math.h>
 
 #include "../../Utility/ResourceManager.h"
 #include "../Player/Player.h"
 #include "DxLib.h"
-
 
 
 #define D_ENEMY_SPEED	(55.0f)
@@ -145,7 +145,7 @@ void EnemyBase::ModeChange(float delta_second)
 			//一定時間経過したらプレイヤーのパワーを下げてモードを戻す。
 			if (izke_time >= 40)
 			{
-				now_mode = CHASE;
+				now_mode = TERRITORY;
 				player->SetPowerDown();
 				izke_time = 0.0f;
 			}
@@ -278,7 +278,7 @@ void EnemyBase::GoTerritory(float delta_second)
 		if (loc_x == ex && loc_y == ey && panel == BRANCH
 			&& (e_sum != old_loc))
 		{
-			//現在位置を添え字に変換
+			//縄張りの座標を添え字に変換
 			StageData::ConvertToIndex(territory, ty, tx);
 
 			//上下左右のパネル情報
@@ -291,119 +291,85 @@ void EnemyBase::GoTerritory(float delta_second)
 
 			//float reserve_root[5] = { 9999, 9999, 9999, 9999, 9999 };				//評価が同じだった場合片方を保存しておく配列
 
-			int top = 9999;
-			int down = 9999;
-			int right = 9999;
-			int left = 9999;
+			//上下左右の評価保存配列
+			int top = 99999;
+			int down = 99999;
+			int right = 99999;
+			int left = 99999;
+
+			//評価保存、ルート保存
+			int reserve_root;
+			eDirectionState reserse_dire[5];
+
+			//評価の合計値、最小値
+			int sum_cost = 0;
+			int min_cost = 0;
+
+			//次の移動方向
+			eDirectionState next_root;
 
 			//現在位置と縄張りの差
 			int loc_dif = (ex - tx) + (ey - ty);
 
-			//評価保存
-			//std::vector<float> valuation = {};
-
-			//座標保存
-			//std::vector<float> root_x = {};
-			//std::vector<float> root_y = {};
-
-			//現在座標からどれほど動いたか
-			int x;
-			int y;
-
 			move_cost = 0;
-			//探索が終了しているかどうか
-			/*while (search_end == false)
-			{*/
 
-				//上下左右のパネル情報の取得
-				panel = StageData::GetAdjacentPanelData(location);
+			//上下左右のパネル情報の取得
+			panel = StageData::GetAdjacentPanelData(location);
 
-				//移動コスト
-				move_cost++;
-
+			//移動コスト
+			//move_cost++;
+			// 
 				//パネルが壁以外なら
 				if (panel[eAdjacentDirection::UP] != WALL && direction != E_DOWN)
 				{
 					//移動コストがどれほどか計算
-					sum_cost = move_cost + ((tx - ex) + (ty - ey - D_OBJECT_SIZE));
-
-					//現在座標を添え字に変換
-					//StageData::ConvertToIndex(e_loction, x, y);
+					sum_cost = (ex - tx) + ((ey - 1) - ty);
 
 					//評価の保存
-					//valuation.push_back(sum_cost);
-					top = abs(sum_cost);
-
-					//座標の保存
-					//root_x.push_back(e_loction.x);
-					//root_y.push_back(e_loction.y);
+					top = abs(sum_cost + loc_dif);
 				}
 				else    //壁だった場合
 				{
-					top = 9999;
+					top = 99999;
 				}
 
 				if (panel[eAdjacentDirection::DOWN] != WALL && direction != E_UP)
 				{
 					//移動コストがどれほどか計算
-					sum_cost = move_cost + ((tx - ex) + (ty - ey + D_OBJECT_SIZE));
-
-					//現在座標を添え字に変換
-					//StageData::ConvertToIndex(e_loction, x, y);
+					sum_cost = (ex - tx) + ((ey + 1) - ty);
 
 					//評価の保存
-					//valuation.push_back(sum_cost);
-					down = abs(sum_cost);
-
-					//座標の保存
-					//root_x.push_back(e_loction.x);
-					//root_y.push_back(e_loction.y);
+					down = abs(sum_cost + loc_dif);
 				}
 				else    //壁だった場合
 				{
-					down = 9999;
+					down = 99999;
 				}
 
 				if (panel[eAdjacentDirection::LEFT] != WALL && direction != E_RIGHT)
 				{
 					//移動コストがどれほどか計算
-					sum_cost = move_cost + ((tx - ex - D_OBJECT_SIZE) + (ty - ey));
-
-					//現在座標を添え字に変換
-					//StageData::ConvertToIndex(e_loction, x, y);
+					sum_cost = ((ex - 1) - tx) + (ey - ty);
 
 					//評価の保存
-					//valuation.push_back(sum_cost);
-					left = abs(sum_cost);
-
-					//座標の保存
-					//oot_x.push_back(e_loction.x);
-					//root_y.push_back(e_loction.y);
+					left = abs(sum_cost + loc_dif);
 				}
 				else    //壁だった場合
 				{
-					left = 9999;
+					left = 99999;
 				}
 
 				if (panel[eAdjacentDirection::RIGHT] != WALL && direction != E_LEFT)
 				{
 					//移動コストがどれほどか計算
-					sum_cost = move_cost + ((tx - ex + D_OBJECT_SIZE) + (ty - ey));
-
-					//現在座標を添え字に変換
-					//StageData::ConvertToIndex(e_loction, x, y);
+					sum_cost = ((ex + 1) - tx) + (ey - ty);
 
 					//評価の保存
-					//valuation.push_back(sum_cost);
-					right = abs(sum_cost);
-
-					//座標の保存
-					//root_x.push_back(e_loction.x);
-					//root_y.push_back(e_loction.y);
+					right = abs(sum_cost + loc_dif);
 				}
 				else    //壁だった場合
 				{
-					right = 9999;
+					right = 99999;
 				}
 
 				//どのルートが一番近いか（評価が一番小さい場所）：　同じならreserve_rootにどちらかを保存
@@ -412,27 +378,27 @@ void EnemyBase::GoTerritory(float delta_second)
 				next_root = E_UP;
 
 				//最小評価より低いかどうか
-				if(min_cost > down)
-				{
-					//低ければmin_costとnext_rootに代入
-					min_cost = down;
-					next_root = E_DOWN;
-				}
-				//else if(min_cost == down[move_cost - 1])	//評価が同じかどうか
-				//{
-				//	reserve_root[0] = down[move_cost - 1];
-				//}
-
-				//最小評価より低いかどうか
 				if (min_cost > left)
 				{
 					//低ければmin_costとnext_rootに代入
 					min_cost = left;
 					next_root = E_LEFT;
 				}
-				//else if (min_cost == left[move_cost - 1])	//評価が同じかどうか
+				//else if (min_cost == left)	//評価が同じかどうか
 				//{
-				//	reserve_root[0] = left[move_cost - 1];
+				//	reserve_root[0] = left;
+				//}
+
+				//最小評価より低いかどうか
+				if (min_cost > down)
+				{
+					//低ければmin_costとnext_rootに代入
+					min_cost = down;
+					next_root = E_DOWN;
+				}
+				//else if(min_cost == down)	//評価が同じかどうか
+				//{
+				//	reserve_root = down;
 				//}
 
 				//最小評価より低いかどうか
@@ -442,51 +408,11 @@ void EnemyBase::GoTerritory(float delta_second)
 					min_cost = right;
 					next_root = E_RIGHT;
 				}
-				//else if (min_cost == right[move_cost - 1])	//評価が同じかどうか
-				//{
-				//	reserve_root[0] = right[move_cost - 1];
-				//}
 
-				//min_costより低い評価が保存されているかどうか
-			/*	for (int i = 0; i <= 5; i++)
-				{
-					if (min_cost > reserve_root[i])
-					{
-						min_cost = reserve_root[i];
-					}
-				}*/
-
-				//今いる位置から次のパネルにlocationを変更する（上なら-24.0ｆ、下なら+24.0ｆ）（D_OBJECT_SIZEを使う）
-				/*switch (next_root)
-				{
-				case E_UP:
-					e_loction.y -= D_OBJECT_SIZE;
-					break;
-				case E_RIGHT:
-					e_loction.x += D_OBJECT_SIZE;
-					break;
-				case E_DOWN:
-					e_loction.y += D_OBJECT_SIZE;
-					break;
-				case E_LEFT:
-					e_loction.x -= D_OBJECT_SIZE;
-					break;
-				default:
-					break;
-				}*/
 
 				direction = next_root;
 
 				old_loc = e_sum;
-				//現在位置が縄張りと近かったら
-				/*if (((territory.x - e_loction.x) + (territory.y - e_loction.y)) <= D_OBJECT_SIZE)
-				{
-					search_end = true;
-				}
-				
-			}*/
-
-			
 
 		}
 }
