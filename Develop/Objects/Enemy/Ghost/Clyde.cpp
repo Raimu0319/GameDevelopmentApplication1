@@ -34,6 +34,11 @@ void Clyde::Initialize()
 	//エネミータイプ設定
 	enemy_type = CLYDE;
 
+	now_mode = START;
+
+	territory.x = 0.0f;
+	territory.y = 860.0f;
+
 	//初期画像の設定
 	image = move_animation[4];
 

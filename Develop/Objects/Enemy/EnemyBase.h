@@ -18,7 +18,8 @@ enum eDirectionState : unsigned char
 	E_UP = 0,
 	E_RIGHT,
 	E_DOWN,
-	E_LEFT
+	E_LEFT,
+	E_NONE
 };
 
 //エネミーのタイプ
@@ -68,6 +69,10 @@ protected:
 	int tx;
 	int ty;
 
+	//プレイヤーの座標を添え字に変換
+	int px;
+	int py;
+
 	//前回添え字保存
 	int old_loc;
 
@@ -78,7 +83,7 @@ public:
 	EnemyBase();			//コンストラクタ
 	virtual ~EnemyBase();		//デストラクタ
 
-	virtual void Initialize();								//初期化処理
+	virtual void Initialize() override;								//初期化処理
 	void Finalize() override;									//終了時処理
 	void Draw(const Vector2D& screen_offset) const override;		//描画処理
 	void Update(float delta_second) override;					//更新処理
@@ -96,7 +101,7 @@ protected:
 
 	virtual void  AnimationControl(float delta_second);		//アニメーション制御
 
-	void RootSearch();			//最短距離探索関数
+	void RootSearch(int x,int y);			//最短距離探索関数
 
 private:
 	void ModeChange(float delta_second);				//敵の状態切り替え

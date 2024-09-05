@@ -37,6 +37,9 @@ void Inky::Initialize()
 	//‰Šú‰æ‘œ‚Ìİ’è
 	image = move_animation[6];
 
+	territory.x = 670.0f;
+	territory.y = 860.0f;
+
 	// ‰Â“®«‚Ìİ’è
 	mobility = eMobilityType::Movable;
 }

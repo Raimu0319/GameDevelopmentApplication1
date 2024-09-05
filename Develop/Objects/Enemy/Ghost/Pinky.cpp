@@ -34,6 +34,13 @@ void Pinky::Initialize()
 	//エネミータイプ設定
 	enemy_type = PINKY;
 
+	now_mode = START;
+
+	direction = E_UP;
+
+	territory.x = 6.0f;
+	territory.y = 1.0f;
+
 	//初期画像の設定
 	image = move_animation[2];
 
