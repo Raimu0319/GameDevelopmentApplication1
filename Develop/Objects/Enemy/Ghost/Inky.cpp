@@ -1,5 +1,7 @@
 #include "Inky.h"
+#include "../../Player/Player.h"
 #include "../../Utility/ResourceManager.h"
+//#include "../../../Utility/StageData.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -44,10 +46,23 @@ void Inky::Initialize()
 	mobility = eMobilityType::Movable;
 }
 
-//void Blinky::PlayerChase(float delta_second)
-//{
-//
-//}
+void Inky::PlayerChase(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(player->GetLocation(), py, px);
+
+	//ルートを検索
+	RootSearch(px, py);
+}
+
+void Inky::GoTerritory(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(territory, ty, tx);
+
+	//ルートを検索
+	RootSearch(tx, ty);
+}
 
 void Inky::AnimationControl(float delta_second)
 {

@@ -13,5 +13,6 @@ public:
 	void  AnimationControl(float delta_second) override;		//アニメーション制御
 
 private:
-	//void PlayerChase(float delta_second) override;		//追跡処理
+	void PlayerChase(float delta_second) override;		//追跡処理
+	void GoTerritory(float delta_second) override;		//縄張り処理
 };

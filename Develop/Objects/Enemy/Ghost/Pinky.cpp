@@ -1,5 +1,7 @@
 #include "Pinky.h"
 #include "../../Utility/ResourceManager.h"
+#include "../../Player/Player.h"
+//#include "../../../Utility/StageData.h"
 #include "DxLib.h"
 
 //コンストラクタ
@@ -48,10 +50,23 @@ void Pinky::Initialize()
 	mobility = eMobilityType::Movable;
 }
 
-//void Blinky::PlayerChase(float delta_second)
-//{
-//
-//}
+void Pinky::PlayerChase(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(player->GetLocation(), py, px);
+
+	//ルートを検索
+	RootSearch(px + 3, py);
+}
+
+void Pinky::GoTerritory(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(territory, ty, tx);
+
+	//ルートを検索
+	RootSearch(tx, ty);
+}
 
 void Pinky::AnimationControl(float delta_second)
 {

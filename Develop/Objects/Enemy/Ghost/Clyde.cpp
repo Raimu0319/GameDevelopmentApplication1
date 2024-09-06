@@ -1,4 +1,5 @@
 #include "Clyde.h"
+#include "../../Player/Player.h"
 #include "../../Utility/ResourceManager.h"
 #include "DxLib.h"
 
@@ -46,10 +47,23 @@ void Clyde::Initialize()
 	mobility = eMobilityType::Movable;
 }
 
-//void Blinky::PlayerChase(float delta_second)
-//{
-//
-//}
+void Clyde::PlayerChase(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(player->GetLocation(), py, px);
+
+	//ルートを検索
+	RootSearch(px, py);
+}
+
+void Clyde::GoTerritory(float delta_second)
+{
+	//縄張りの座標を添え字に変換
+	StageData::ConvertToIndex(territory, ty, tx);
+
+	//ルートを検索
+	RootSearch(tx, ty);
+}
 
 void Clyde::AnimationControl(float delta_second)
 {

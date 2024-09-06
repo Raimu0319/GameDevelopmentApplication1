@@ -46,6 +46,7 @@ protected:
 	Vector2D old_location;					// 前回のlocation
 	Vector2D territory;					//縄張り座標
 	Vector2D loc_diff;					//目標地点との差
+	Vector2D gate_point;					//ゲートの位置
 
 	Vector2D const start_point;			//初期地点の座標
 	float time_count;					//時間計測
@@ -55,6 +56,7 @@ protected:
 	int animation_num[2] = { };		// 移動アニメーションの順番
 	float now_time;					//現在時間取得
 	float izke_time;					//イジケ時間
+	float mode_time;				//モード変更処理
 
 	bool search_end;					//探索が終了したかどうか
 
@@ -98,6 +100,7 @@ public:
 
 protected:
 	virtual void PlayerChase(float delta_second);		//プレイヤーを追跡する処理
+	virtual void GoTerritory(float delta_second);		//縄張りに向かう処理
 
 	virtual void  AnimationControl(float delta_second);		//アニメーション制御
 
@@ -107,7 +110,6 @@ private:
 	void ModeChange(float delta_second);				//敵の状態切り替え
 	void Movement(float delta_second);			//移動処理
 	void EnemyStart(float delta_second);			//ゲーム開始時処理
-	void GoTerritory(float delta_second);		//縄張りに向かう処理
 	void EnemyRespawn(float delta_second);		//リスポーン処理
 	void EnemyEscape(float delta_second);		//いじけ状態処理
 	void EnemyGate();				//トンネルの減速処理	

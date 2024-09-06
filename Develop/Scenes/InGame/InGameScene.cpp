@@ -194,7 +194,7 @@ void InGameScene::LoadStageMapCSV()
 			case 'E':
 				generate_location = (Vector2D((float)(spos_x - 1), (float)(spos_y - 1)) * D_OBJECT_SIZE) + (D_OBJECT_SIZE / 2.0f);
 
-				//
+				//エネミータイプ分け
 				switch (e_count)
 				{
 					case 0:
