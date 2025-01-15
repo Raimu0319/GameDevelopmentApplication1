@@ -90,7 +90,6 @@ public:
 	/// <returns>プレイヤーの状態</returns>
 	bool GetDestroy() const;
 
-
 private:
 	/// <summary>
 	/// 移動処理

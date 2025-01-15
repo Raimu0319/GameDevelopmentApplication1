@@ -73,7 +73,6 @@ void SceneManager::Run()
 	{
 		// 入力情報の更新
 		input->Update();
-		
 
 		// フレームレートの制御
 		FreamControl();

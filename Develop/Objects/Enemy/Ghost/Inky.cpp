@@ -1,7 +1,7 @@
 #include "Inky.h"
 #include "../../Player/Player.h"
-#include "../../Utility/ResourceManager.h"
-//#include "../../../Utility/StageData.h"
+#include "../../../Utility/ResourceManager.h"
+#include "../../../Utility/StageData.h"
 #include "DxLib.h"
 
 //コンストラクタ

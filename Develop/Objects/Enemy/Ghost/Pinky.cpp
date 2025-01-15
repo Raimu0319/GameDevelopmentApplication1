@@ -1,7 +1,7 @@
 #include "Pinky.h"
-#include "../../Utility/ResourceManager.h"
+#include "../../../Utility/ResourceManager.h"
 #include "../../Player/Player.h"
-//#include "../../../Utility/StageData.h"
+#include "../../../Utility/StageData.h"
 #include "DxLib.h"
 
 //コンストラクタ

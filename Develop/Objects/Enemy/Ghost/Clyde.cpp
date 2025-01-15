@@ -1,6 +1,6 @@
 #include "Clyde.h"
 #include "../../Player/Player.h"
-#include "../../Utility/ResourceManager.h"
+#include "../../../Utility/ResourceManager.h"
 #include "DxLib.h"
 
 //コンストラクタ
